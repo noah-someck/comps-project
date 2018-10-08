@@ -1,5 +1,6 @@
 package edu.carleton.cs.ASEcomps;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -29,19 +30,17 @@ class ClassPrinter implements ClassFileTransformer {
         }
         ClassReader cr = new ClassReader(classfileBuffer);
         ClassWriter cw = new ClassWriter(cr, 0);
-        Textifier textifier = new Textifier();
         PrintWriter pw = new PrintWriter(System.out);
         ClassVisitor cv = new TraceClassVisitor(pw);
-        cr.accept(cw, 0);
-        System.out.println(className);
         cr.accept(cv, 0);
+        cr.accept(cw, 0);
         return cw.toByteArray();
     }
 }
 
 public class Agent {
     public static void premain(String premainArgs, Instrumentation inst){
-        Textifier textifier = new Textifier();
-        inst.addTransformer(new ClassPrinter());
+        inst.addTransformer(new AddTimerEachMethod());
+//        inst.addTransformer(new ClassPrinter());
     }
 }
