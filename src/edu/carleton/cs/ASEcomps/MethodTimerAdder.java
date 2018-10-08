@@ -11,7 +11,10 @@ import java.io.PrintStream;
 import java.lang.reflect.Method;
 
 public class MethodTimerAdder extends MethodVisitor {
-    private int time;
+    private int time = -1;
+    private int addedStack = 0;
+    private int addedLocals = 0;
+    private boolean encounteredExit = false;
     private LocalVariablesSorter lvs;
 
     public MethodTimerAdder(int api) {
@@ -28,49 +31,44 @@ public class MethodTimerAdder extends MethodVisitor {
 
     @Override
     public void visitCode() {
-        super.visitCode(); // Get to start of instruction segment
-        try {
-            super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-            time = lvs.newLocal(Type.LONG_TYPE);
-            super.visitVarInsn(Opcodes.LSTORE, time);
-        } catch (Throwable t) {
-            t.printStackTrace();
+        if (lvs == null) {
+            throw new NullPointerException("This instance's LocalVariablesSorter must be set before use");
         }
+        super.visitCode(); // Get to start of instruction segment
+        super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        time = lvs.newLocal(Type.LONG_TYPE);
+        super.visitVarInsn(Opcodes.LSTORE, time);
+        addedStack = Math.max(addedStack, 2);
+        //addedLocals += 2; // unnecessary because the lvs takes care of this local.
     }
 
     @Override
     public void visitInsn(int opcode) {
         System.out.println(ASMifier.OPCODES[opcode]);
         // Before the instruction opcode would have otherwise been visited:
-        try {
-            if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) || opcode == Opcodes.ATHROW) {
-                System.out.println("found end");
-                super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-                super.visitVarInsn(Opcodes.LLOAD, time);
-                super.visitInsn(Opcodes.LSUB);
-                super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "toString", "(J)Ljava/lang/String;", false);
-                super.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-                super.visitInsn(Opcodes.SWAP);
-                super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-//                visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-//                visitVarInsn(Opcodes.LLOAD, time);
-//                visitInsn(Opcodes.LSUB);
-//                visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "toString", "(J)Ljava/lang/String;", false);
-//                visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-//                visitInsn(Opcodes.SWAP);
-//                visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-
+        if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) || opcode == Opcodes.ATHROW) {
+            super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+            super.visitVarInsn(Opcodes.LLOAD, time);
+            super.visitInsn(Opcodes.LSUB);
+            super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "toString", "(J)Ljava/lang/String;", false);
+            super.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            super.visitInsn(Opcodes.SWAP);
+            super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            if (!encounteredExit) {
+                encounteredExit = true;
+                addedStack = Math.max(addedStack, 4);
             }
-            // Finally, visit instruction opcode
-            super.visitInsn(opcode);
-        } catch (Throwable t) {
-            t.printStackTrace();
         }
+        // Finally, visit instruction opcode
+        super.visitInsn(opcode);
+
     }
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
-        super.visitMaxs(maxStack + 4, maxLocals + 2);
-        System.out.println("visitMaxs");
+        super.visitMaxs(maxStack + addedStack, maxLocals + addedLocals);
+        addedStack = 0;
+        addedLocals = 0;
+        encounteredExit = false;
     }
 }

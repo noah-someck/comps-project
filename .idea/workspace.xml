@@ -7,14 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff619076-31a5-441f-a511-801bc992b2ca" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_ow2_asm_asm_commons_6_2_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/MethodTimerAdder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InstrumentationTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/InstrumentationTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/usageTracker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/MethodTimerAdder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/MethodTimerAdder.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,12 +29,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="3965" />
+          <entry key="java" value="5196" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="3965" />
+          <entry key="JAVA" value="5196" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -57,20 +53,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="204">
+              <caret line="12" column="96" lean-forward="true" selection-start-line="12" selection-start-column="96" selection-end-line="12" selection-end-column="96" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
+            <state relative-caret-position="408">
+              <caret line="64" column="47" selection-start-line="64" selection-start-column="47" selection-end-line="64" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,14 +77,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/MethodTimerAdder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="42" column="53" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
+            <state relative-caret-position="137">
+              <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#439#440#0" expanded="true" />
-                <element signature="e#465#466#0" expanded="true" />
-                <element signature="e#523#524#0" expanded="true" />
-                <element signature="e#553#554#0" expanded="true" />
+                <element signature="e#479#480#0" expanded="true" />
+                <element signature="e#505#506#0" expanded="true" />
+                <element signature="e#563#564#0" expanded="true" />
+                <element signature="e#593#594#0" expanded="true" />
                 <element signature="e#651#652#0" expanded="true" />
                 <element signature="e#681#682#0" expanded="true" />
               </folding>
@@ -99,8 +95,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="40" column="46" lean-forward="true" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
+            <state relative-caret-position="270">
+              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -111,8 +107,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="45" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="45" />
+            <state relative-caret-position="51">
+              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -126,6 +122,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Exce</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -136,9 +137,9 @@
         <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/usageTracker.java" />
         <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/UsageTracker.java" />
         <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Main.java" />
-        <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java" />
-        <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java" />
         <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/MethodTimerAdder.java" />
+        <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java" />
+        <option value="$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java" />
       </list>
     </option>
   </component>
@@ -148,9 +149,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="601" />
-    <option name="width" value="1326" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="799" />
+    <option name="width" value="1128" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
@@ -166,6 +167,24 @@
             <path>
               <item name="InstrumentationTest" type="b2602c69:ProjectViewProjectNode" />
               <item name="InstrumentationTest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InstrumentationTest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InstrumentationTest" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InstrumentationTest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InstrumentationTest" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InstrumentationTest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="InstrumentationTest" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="InstrumentationTest_jar" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="InstrumentationTest" type="b2602c69:ProjectViewProjectNode" />
@@ -197,7 +216,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538967329591" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538979445104" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -259,27 +278,27 @@
       <updated>1538761770540</updated>
       <workItem from="1538761775368" duration="947000" />
       <workItem from="1538762859414" duration="3899000" />
-      <workItem from="1538787884694" duration="24026000" />
+      <workItem from="1538787884694" duration="32644000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28872000" />
+    <option name="totallyTimeSpent" value="37490000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="601" y="0" width="1326" height="1047" extended-state="0" />
+    <frame x="799" y="0" width="1128" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10031596" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24906367" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32932165" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33260393" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33260393" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -310,13 +329,6 @@
     <entry file="file://$PROJECT_DIR$/out/production/InstrumentationTest/edu/carleton/cs/ASEcomps/Main.class" />
     <entry file="file://$PROJECT_DIR$/out/production/InstrumentationTest/META-INF/MANIFEST.MF" />
     <entry file="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm/6.2.1/asm-6.2.1.jar!/org/objectweb/asm/Type.class" />
-    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="45" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm/6.2.1/asm-6.2.1.jar!/org/objectweb/asm/MethodVisitor.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -324,46 +336,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java">
+    <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="44" column="5" lean-forward="true" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="40" column="46" lean-forward="true" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="204">
+          <caret line="12" column="96" lean-forward="true" selection-start-line="12" selection-start-column="96" selection-end-line="12" selection-end-column="96" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/MethodTimerAdder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="42" column="53" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
+        <state relative-caret-position="137">
+          <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#439#440#0" expanded="true" />
-            <element signature="e#465#466#0" expanded="true" />
-            <element signature="e#523#524#0" expanded="true" />
-            <element signature="e#553#554#0" expanded="true" />
+            <element signature="e#479#480#0" expanded="true" />
+            <element signature="e#505#506#0" expanded="true" />
+            <element signature="e#563#564#0" expanded="true" />
+            <element signature="e#593#594#0" expanded="true" />
             <element signature="e#651#652#0" expanded="true" />
             <element signature="e#681#682#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/AddTimerEachMethod.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="270">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/carleton/cs/ASEcomps/Agent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="64" column="47" selection-start-line="64" selection-start-column="47" selection-end-line="64" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
