@@ -2,10 +2,8 @@ package edu.carleton.cs.ASEcomps;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.LocalVariablesSorter;
-import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceClassVisitor;
-import org.objectweb.asm.util.TraceMethodVisitor;
 
 import java.io.PrintWriter;
 import java.lang.instrument.ClassFileTransformer;
@@ -13,11 +11,9 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 
-
 public class AddTimerEachMethod implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        System.out.println("AddTimerEachMethod transform started");
         ClassReader cr = new ClassReader(classfileBuffer);
 //        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
         ClassWriter cw = new ClassWriter(cr, 0);
@@ -48,7 +44,6 @@ public class AddTimerEachMethod implements ClassFileTransformer {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        System.out.println("AddTimerEachMethod transform ran");
         return cw.toByteArray();
         //return classfileBuffer;
     }

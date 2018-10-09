@@ -6,10 +6,6 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 import org.objectweb.asm.util.ASMifier;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Method;
-
 public class MethodTimerAdder extends MethodVisitor {
     private int time = -1;
     private int addedStack = 0;
