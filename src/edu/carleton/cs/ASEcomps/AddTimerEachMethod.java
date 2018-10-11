@@ -23,8 +23,8 @@ public class AddTimerEachMethod implements ClassFileTransformer {
             public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
                 MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
 //                MethodVisitor traceMethodVisitor = new TraceMethodVisitor(mv, textifier);
-//                MethodTimerAdder methodTimerAdder = new MethodTimerAdder(Opcodes.ASM6, traceMethodVisitor);
-                MethodTimerAdder methodTimerAdder = new MethodTimerAdder(Opcodes.ASM6, mv);
+//                MethodAddPrintingTimer methodTimerAdder = new MethodAddPrintingTimer(Opcodes.ASM6, traceMethodVisitor);
+                MethodAddPrintingTimer methodTimerAdder = new MethodAddPrintingTimer(Opcodes.ASM6, mv);
                 LocalVariablesSorter lvs = new LocalVariablesSorter(access, descriptor, methodTimerAdder);
                 methodTimerAdder.setLVS(lvs);
                 return lvs;
@@ -35,8 +35,8 @@ public class AddTimerEachMethod implements ClassFileTransformer {
         try {
             cr.accept(timerAddVisitor, ClassReader.EXPAND_FRAMES);
             //cr.accept(cw, 0);
-            System.out.println("cw contents:");
-            (new ClassReader(cw.toByteArray())).accept(traceClassVisitor, 0);
+//            System.out.println("cw contents:");
+//            (new ClassReader(cw.toByteArray())).accept(traceClassVisitor, 0);
             // The following line just prints the original class because cr doesn't get modified.
             //cr.accept(traceClassVisitor, 0);
 

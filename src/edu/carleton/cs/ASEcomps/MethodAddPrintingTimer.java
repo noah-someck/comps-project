@@ -6,18 +6,18 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 import org.objectweb.asm.util.ASMifier;
 
-public class MethodTimerAdder extends MethodVisitor {
+public class MethodAddPrintingTimer extends MethodVisitor {
     private int time = -1;
     private int addedStack = 0;
     private int addedLocals = 0;
     private boolean encounteredExit = false;
     private LocalVariablesSorter lvs;
 
-    public MethodTimerAdder(int api) {
+    public MethodAddPrintingTimer(int api) {
         super(api);
     }
 
-    public MethodTimerAdder(int api, MethodVisitor mv) {
+    public MethodAddPrintingTimer(int api, MethodVisitor mv) {
         super(api, mv);
     }
 
