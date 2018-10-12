@@ -24,8 +24,8 @@ public class AddTimerEachMethod implements ClassFileTransformer {
             public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
                 MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
 //                MethodVisitor traceMethodVisitor = new TraceMethodVisitor(mv, textifier);
-//                MethodAddPrintingTimer methodTimerAdder = new MethodAddPrintingTimer(Opcodes.ASM6, traceMethodVisitor);
-                MethodAddPrintingTimer methodTimerAdder = new MethodAddPrintingTimer(Opcodes.ASM6, mv);
+//                MethodAugmenter methodTimerAdder = new MethodAugmenter(Opcodes.ASM6, traceMethodVisitor);
+                MethodTimerAdder methodTimerAdder = new MethodTimerAdder(Opcodes.ASM6, mv, access, name, descriptor);
                 LocalVariablesSorter lvs = new LocalVariablesSorter(access, descriptor, methodTimerAdder);
                 methodTimerAdder.setLVS(lvs);
                 return lvs;

@@ -40,7 +40,7 @@ public interface ClassFileTransformers {
                 return classfileBuffer;
             };
 
-    public static ClassFileTransformer fromVisitor(Class<? extends ClassVisitor> visitorClass, int api, int writerFlags, int parsingOptions) {
+    public static ClassFileTransformer fromClassVisitor(Class<? extends ClassVisitor> visitorClass, int api, int writerFlags, int parsingOptions) {
         return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
         {
             ClassReader cr = new ClassReader(classfileBuffer);
@@ -50,7 +50,7 @@ public interface ClassFileTransformers {
             try {
                 visitorConstructor = visitorClass.getConstructor(int.class, ClassVisitor.class);
             } catch (NoSuchMethodException e) {
-                System.out.println("The ClassVisitor Class given must have a constructor with parameters (int, ClassWriter)");
+                System.out.println("The ClassVisitor Class given must have a constructor with parameters (int, ClassVisitor)");
                 e.printStackTrace();
                 visitorConstructor = null;
             }

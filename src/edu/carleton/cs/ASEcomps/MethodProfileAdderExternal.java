@@ -5,7 +5,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-public class MethodProfileAdder extends MethodVisitor implements LVSUser {
+public class MethodProfileAdderExternal extends MethodVisitor implements LVSUser {
     private String name;
     private boolean isMain;
     private int time = -1;
@@ -14,17 +14,17 @@ public class MethodProfileAdder extends MethodVisitor implements LVSUser {
     private boolean encounteredExit = false;
     private LocalVariablesSorter lvs;
 
-    public MethodProfileAdder(int api, String name) {
+    public MethodProfileAdderExternal(int api, String name) {
         super(api);
         this.name = name;
     }
 
-    public MethodProfileAdder(int api, MethodVisitor mv, String name) {
+    public MethodProfileAdderExternal(int api, MethodVisitor mv, String name) {
         super(api, mv);
         this.name = name;
     }
 
-    public MethodProfileAdder(int api, MethodVisitor mv, int access, String name, String descriptor, String signature, String[] exceptions) {
+    public MethodProfileAdderExternal(int api, MethodVisitor mv, int access, String name, String descriptor, String signature, String[] exceptions) {
         this(api, mv, name);
         isMain = (name.endsWith("Main") && descriptor.contentEquals("([Ljava/lang/String;)V")); // incomplete
         System.out.println(isMain);
@@ -55,14 +55,14 @@ public class MethodProfileAdder extends MethodVisitor implements LVSUser {
             super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
             super.visitVarInsn(Opcodes.LLOAD, time);
             super.visitInsn(Opcodes.LSUB);
-            super.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/carleton/cs/ASEcomps/ProfileAccumulator", "recordMethodUse", "(Ljava/lang/String;J)V", false);
+            super.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/carleton/cs/ASEcomps/ExternalProfileAccumulator", "recordMethodUse", "(Ljava/lang/String;J)V", false);
             if (!encounteredExit) {
                 encounteredExit = true;
                 addedStack = Math.max(addedStack, 5);
             }
             if (isMain) {
                 super.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-                super.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/carleton/cs/ASEcomps/ProfileAccumulator", "getReport", "()Ljava/lang/String;", false);
+                super.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/carleton/cs/ASEcomps/ExternalProfileAccumulator", "getReport", "()Ljava/lang/String;", false);
                 super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
             }
         }

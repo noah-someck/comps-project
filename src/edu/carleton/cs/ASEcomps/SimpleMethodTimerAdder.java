@@ -4,22 +4,23 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
-import org.objectweb.asm.util.ASMifier;
 
-public class MethodAddPrintingTimer extends MethodVisitor implements LVSUser {
+public class SimpleMethodTimerAdder extends MethodVisitor implements LVSUser {
     private int time = -1;
     private int addedStack = 0;
     private int addedLocals = 0;
     private boolean encounteredExit = false;
     private LocalVariablesSorter lvs;
 
-    public MethodAddPrintingTimer(int api, MethodVisitor mv) {
+    public SimpleMethodTimerAdder(int api, MethodVisitor mv) {
         super(api, mv);
     }
 
     public void setLVS(LocalVariablesSorter lvs) {
         this.lvs = lvs;
     }
+
+    public int getTime() {return time;}
 
     @Override
     public void visitCode() {
@@ -36,16 +37,11 @@ public class MethodAddPrintingTimer extends MethodVisitor implements LVSUser {
 
     @Override
     public void visitInsn(int opcode) {
-        System.out.println(ASMifier.OPCODES[opcode]);
         // Before the instruction opcode would have otherwise been visited:
         if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) || opcode == Opcodes.ATHROW) {
             super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
             super.visitVarInsn(Opcodes.LLOAD, time);
             super.visitInsn(Opcodes.LSUB);
-            super.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "toString", "(J)Ljava/lang/String;", false);
-            super.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            super.visitInsn(Opcodes.SWAP);
-            super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
             if (!encounteredExit) {
                 encounteredExit = true;
                 addedStack = Math.max(addedStack, 4);
