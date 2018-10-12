@@ -5,7 +5,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-public class MethodProfileAdder extends LVSUser {
+public class MethodProfileAdder extends MethodVisitor implements LVSUser {
     private String name;
     private boolean isMain;
     private int time = -1;

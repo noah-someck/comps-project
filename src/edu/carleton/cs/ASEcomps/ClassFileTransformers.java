@@ -19,7 +19,7 @@ public interface ClassFileTransformers {
      * @return A ClassFileTransformer that applies given transformer on a class if the class's name satisfies the given
      * predicate, and otherwise passes the class through unchanged.
      */
-    public static ClassFileTransformer FilterByClassName(@NotNull ClassFileTransformer transformer, Predicate<String> stringPredicate) {
+    public static ClassFileTransformer filterByClassName(@NotNull ClassFileTransformer transformer, Predicate<String> stringPredicate) {
         return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) -> {
             if (stringPredicate.test(className))
                 return transformer.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
@@ -40,34 +40,36 @@ public interface ClassFileTransformers {
                 return classfileBuffer;
             };
 
-
-    public static ClassFileTransformer ApplyLVSMethodVisitor(Constructor<?> methodVisitorConstructor) {
+    public static ClassFileTransformer fromVisitor(Class<? extends ClassVisitor> visitorClass, int api, int writerFlags, int parsingOptions) {
         return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
-            {
-                ClassReader cr = new ClassReader(classfileBuffer);
-                ClassWriter cw = new ClassWriter(cr, 0);
-                ClassVisitor useLVSMethodVisitor = new ClassVisitor(Opcodes.ASM6, cw) {
-                    @Override
-                    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-                        MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
-                        LVSUser preLVSMv = null;
-                        try {
-                            preLVSMv = (LVSUser) methodVisitorConstructor.newInstance(api, mv, access, name, descriptor, signature, exceptions);
-                        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                            e.printStackTrace();
-                            System.exit(1);
-                        }
-                        LocalVariablesSorter lvs = new LocalVariablesSorter(access, descriptor, preLVSMv);
-                        preLVSMv.setLVS(lvs);
-                        return lvs;
-                    }
-                };
-                try {
-                    cr.accept(useLVSMethodVisitor, ClassReader.EXPAND_FRAMES);
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-                return cw.toByteArray();
-            };
+        {
+            ClassReader cr = new ClassReader(classfileBuffer);
+            ClassWriter cw = new ClassWriter(cr, writerFlags);
+            Constructor<? extends ClassVisitor> visitorConstructor;
+            ClassVisitor cv;
+            try {
+                visitorConstructor = visitorClass.getConstructor(int.class, ClassVisitor.class);
+            } catch (NoSuchMethodException e) {
+                System.out.println("The ClassVisitor Class given must have a constructor with parameters (int, ClassWriter)");
+                e.printStackTrace();
+                visitorConstructor = null;
+            }
+            assert visitorConstructor != null;
+            try {
+                cv = visitorConstructor.newInstance(api, cw);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                cv = null;
+            }
+            assert cv != null : "Instantiation of the ClassVisitor failed.";
+            try {
+                cr.accept(cv, parsingOptions);
+            } catch (Exception t) {
+                t.printStackTrace();
+            }
+            return cw.toByteArray();
+        };
     }
+
+
 }
