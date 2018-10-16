@@ -1,11 +1,5 @@
 package edu.carleton.cs.ASEcomps;
 
-import jdk.internal.org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Opcodes;
-
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-
 public class Main {
 
     private static double manySines(double d, int count) {

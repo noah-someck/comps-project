@@ -26,7 +26,7 @@ public class MethodProfileAdderExternal extends MethodVisitor implements LVSUser
 
     public MethodProfileAdderExternal(int api, MethodVisitor mv, int access, String name, String descriptor, String signature, String[] exceptions) {
         this(api, mv, name);
-        isMain = (name.endsWith("Main") && descriptor.contentEquals("([Ljava/lang/String;)V")); // incomplete
+        isMain = (name.endsWith("Main") && descriptor.equals("([Ljava/lang/String;)V")); // incomplete
         System.out.println(isMain);
     }
 

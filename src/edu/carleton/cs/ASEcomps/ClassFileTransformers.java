@@ -23,7 +23,7 @@ public interface ClassFileTransformers {
         return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) -> {
             if (stringPredicate.test(className))
                 return transformer.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
-            return classfileBuffer;
+            return null;
         };
     }
 
@@ -37,7 +37,7 @@ public interface ClassFileTransformers {
                 PrintWriter pw = new PrintWriter(System.out);
                 ClassVisitor cv = new TraceClassVisitor(null, new Textifier(), pw);
                 cr.accept(cv, 0);
-                return classfileBuffer;
+                return null;
             };
 
     public static ClassFileTransformer fromClassVisitor(Class<? extends ClassVisitor> visitorClass, int api, int writerFlags, int parsingOptions) {
@@ -71,5 +71,16 @@ public interface ClassFileTransformers {
         };
     }
 
+    /**
+     * Most of the time, we don't want to transform the classes that are loaded by the bootstrap classloader
+     * @param transformer
+     * @return
+     */
+    public static ClassFileTransformer skipBootstrapped(@NotNull ClassFileTransformer transformer) {
+        return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) -> {
+            if (loader == null) return null;
+            return transformer.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
+        };
+    }
 
 }

@@ -5,23 +5,29 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
+import org.objectweb.asm.util.Textifier;
 
+import java.lang.reflect.Modifier;
 import java.util.function.Supplier;
 
 public class ExternalProfilerAdder extends ClassVisitor {
-    private boolean skipClass;
+    private boolean skipClass = false;
+//    private String className;
 
     public ExternalProfilerAdder(int api, ClassVisitor classVisitor, String className) {
         super(api, classVisitor);
-        skipClass = className.contentEquals(ExternalProfileAccumulator.class.getName());
+        // Note: attempting to use ExternalProfileAccumulator before the system classloader starts (e.g. transformation
+        // of classes loaded by bootstrap classloader) will fail with cryptic or absent error messages
+        skipClass = className == null || className.equals(ExternalProfileAccumulator.class.getName());
+//        this.className = className;
     }
-
 
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-        if (skipClass) return super.visitMethod(access, name, descriptor, signature, exceptions);
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
+        if (skipClass) return mv;
+
         PrintResultsInMain mainVisitor = new PrintResultsInMain(api, mv, access, name, descriptor);
         MethodRecordTimeExternal methodRecordTimeExternal = new MethodRecordTimeExternal(api, mainVisitor, name);
         MethodTimerAdder methodTimerAdder = new MethodTimerAdder(api, methodRecordTimeExternal, access, name, descriptor);
@@ -63,8 +69,8 @@ public class ExternalProfilerAdder extends ClassVisitor {
 
         public PrintResultsInMain(int api, MethodVisitor methodVisitor, int access, String name, String descriptor) {
             super(api, methodVisitor);
-            isMain = name.contentEquals("main") && descriptor.contentEquals("([Ljava/lang/String;)V");
-            isMain = isMain && (access & Opcodes.ACC_PUBLIC) > 0 && (access & Opcodes.ACC_STATIC) > 0;
+            isMain = name.equals("main") && descriptor.equals("([Ljava/lang/String;)V");
+            isMain = isMain && Modifier.isStatic(access) && Modifier.isPublic(access);
         }
 
         @Override
@@ -75,6 +81,18 @@ public class ExternalProfilerAdder extends ClassVisitor {
                 super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
             }
             super.visitInsn(opcode);
+        }
+
+        @Override
+        public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+            // This inserts the get/print code right before any invocation of (java/lang/)System.exit, which covers
+            // many (but not all) cases where a Java program ends normally but does not reach RETURN or ATHROW in main
+            if (opcode == Opcodes.INVOKESTATIC && owner.equals("java/lang/System") && name.equals("exit")) {
+                super.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                super.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/carleton/cs/ASEcomps/ExternalProfileAccumulator", "getReport", "()Ljava/lang/String;", false);
+                super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            }
+            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
         }
 
         @Override

@@ -5,6 +5,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
+// This class is less safe than MethodTimerAdder; it will fail on constructors. Used with AddTimerEachMethod.
+@Deprecated
 public class SimpleMethodTimerAdder extends MethodVisitor implements LVSUser {
     private int time = -1;
     private int addedStack = 0;

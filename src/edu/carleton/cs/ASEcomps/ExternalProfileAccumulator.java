@@ -10,14 +10,6 @@ public class ExternalProfileAccumulator {
     public static void recordMethodUse(String methodName, long timeInMethod) {
         methodTimes.merge(methodName, timeInMethod, Long::sum);
         methodCalls.merge(methodName, 1, Integer::sum);
-//        if (!methodTimes.containsKey(methodName)) {
-//            assert !methodCalls.containsKey(methodName);
-//            methodTimes.put(methodName, timeInMethod);
-//            methodCalls.put(methodName, 1);
-//        } else {
-//            Long prevTime = methodTimes.get(methodName);
-//            methodCalls.replace(methodName, methodCalls.get(methodName) + 1);
-//        }
     }
 
     public static String getReport() {
