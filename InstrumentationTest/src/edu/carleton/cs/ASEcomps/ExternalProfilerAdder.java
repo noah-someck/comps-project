@@ -3,23 +3,20 @@ package edu.carleton.cs.ASEcomps;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.AdviceAdapter;
-import org.objectweb.asm.util.Textifier;
 
 import java.lang.reflect.Modifier;
 import java.util.function.Supplier;
 
 public class ExternalProfilerAdder extends ClassVisitor {
     private boolean skipClass = false;
-//    private String className;
+    private String className;
 
     public ExternalProfilerAdder(int api, ClassVisitor classVisitor, String className) {
         super(api, classVisitor);
         // Note: attempting to use ExternalProfileAccumulator before the system classloader starts (e.g. transformation
         // of classes loaded by bootstrap classloader) will fail with cryptic or absent error messages
         skipClass = className == null || className.equals(ExternalProfileAccumulator.class.getName());
-//        this.className = className;
+        this.className = className;
     }
 
 
@@ -29,7 +26,7 @@ public class ExternalProfilerAdder extends ClassVisitor {
         if (skipClass) return mv;
 
         PrintResultsInMain mainVisitor = new PrintResultsInMain(api, mv, access, name, descriptor);
-        MethodRecordTimeExternal methodRecordTimeExternal = new MethodRecordTimeExternal(api, mainVisitor, name);
+        MethodRecordTimeExternal methodRecordTimeExternal = new MethodRecordTimeExternal(api, mainVisitor, name, className);
         MethodTimerAdder methodTimerAdder = new MethodTimerAdder(api, methodRecordTimeExternal, access, name, descriptor);
         methodRecordTimeExternal.setTimeSupplier(methodTimerAdder::getTime);
         return LVSUser.buildChain(access, descriptor, mv, mainVisitor, methodRecordTimeExternal, methodTimerAdder);
@@ -37,11 +34,13 @@ public class ExternalProfilerAdder extends ClassVisitor {
 
     public static class MethodRecordTimeExternal extends MethodVisitor {
         private final String name;
+        private final String className;
         private Supplier<Integer> timeSupplier;
 
-        MethodRecordTimeExternal(int api, MethodVisitor methodVisitor, String name) {
+        MethodRecordTimeExternal(int api, MethodVisitor methodVisitor, String name, String className) {
             super(api, methodVisitor);
             this.name = name;
+            this.className = className;
         }
 
         void setTimeSupplier(Supplier<Integer> supplier) {
@@ -51,7 +50,7 @@ public class ExternalProfilerAdder extends ClassVisitor {
         @Override
         public void visitInsn(int opcode) {
             if ((opcode >= Opcodes.IRETURN && opcode <= Opcodes.RETURN) || opcode == Opcodes.ATHROW) {
-                super.visitLdcInsn(name);
+                super.visitLdcInsn(className + "." + name);
                 super.visitVarInsn(Opcodes.LLOAD, timeSupplier.get());
                 super.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/carleton/cs/ASEcomps/ExternalProfileAccumulator", "recordMethodUse", "(Ljava/lang/String;J)V", false);
             }
