@@ -17,18 +17,22 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        double x = 0;
-        for (int i = 0; i<5; i++) {
-            x = manySines(x, 1_000_000);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            x = manyCosines(x, 3_000_000);
-        }
-
-        System.out.println("Result: " + x);
-        //System.out.println("Spent " + (System.currentTimeMillis() - time) + " milliseconds.");
+        String x = "Hello";
+        String y = x;
+        x = "2";
+        System.out.println(x==y);
+        x += "world";
+//        double x = 0;
+//        for (int i = 0; i<5; i++) {
+//            x = manySines(x, 1_000_000);
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            x = manyCosines(x, 3_000_000);
+//        }
+//
+//        System.out.println("Result: " + x);
     }
 }

@@ -39,6 +39,10 @@ public class Agent {
 //        inst.addTransformer(ClassFileTransformers.filterByClassName(ClassFileTransformers.ClassPrinter, startsWithEdu));
     }
 
+    public static void agentMain(String agentargs, Instrumentation inst) {
+
+    }
+
     private static ClassFileTransformer testTransformer() {
         return new ClassFileTransformer() {
             @Override
@@ -47,7 +51,6 @@ public class Agent {
                 if (!className.equals("java/lang/Shutdown")) {
                     return null;
                 }
-//                System.out.println("Found runtime");
                 ClassReader cr = new ClassReader(classfileBuffer);
                 Printer printer = new Textifier();
                 ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM6) {
