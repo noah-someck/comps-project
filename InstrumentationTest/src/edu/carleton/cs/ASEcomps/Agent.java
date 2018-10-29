@@ -19,23 +19,41 @@ public class Agent {
 
         Predicate<String> startsWithEdu = (s) -> s.startsWith("edu/");
         Predicate<String> notJava = (s) -> !s.startsWith("java/");
+        Predicate<String> stringClass = (s) -> s.contains("java/lang");
         // Note to self: check out ModuleVisitor.visitMainClass()
 //        ClassFileTransformer add_printing_timer = ClassFileTransformers.fromClassVisitor(PrintingTimerAdder.class, Opcodes.ASM6, 0, ClassReader.EXPAND_FRAMES);
 //        inst.addTransformer(ClassFileTransformers.skipBootstrapped(add_printing_timer));
 
-        ClassFileTransformer externalProfilingTransformer = (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
+//        ClassFileTransformer externalProfilingTransformer = (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
+//        {
+//            ClassReader cr = new ClassReader(classfileBuffer);
+//            ClassWriter cw = new ClassWriter(cr, 0);
+//            try {
+//                ExternalProfilerAdder cv = new ExternalProfilerAdder(Opcodes.ASM6, cw, className);
+//                cr.accept(cv, ClassReader.EXPAND_FRAMES);
+//            } catch (Throwable t) {
+//                t.printStackTrace();
+//            }
+//            return cw.toByteArray();
+//        };
+
+        ClassFileTransformer stringConstructorCheckTransformer = (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
         {
+            System.out.println("Transforming java/lang/String...");
             ClassReader cr = new ClassReader(classfileBuffer);
             ClassWriter cw = new ClassWriter(cr, 0);
             try {
-                ExternalProfilerAdder cv = new ExternalProfilerAdder(Opcodes.ASM6, cw, className);
+                ConstructorCheckAdder cv = new ConstructorCheckAdder(Opcodes.ASM6, cw);
                 cr.accept(cv, ClassReader.EXPAND_FRAMES);
             } catch (Throwable t) {
                 t.printStackTrace();
             }
             return cw.toByteArray();
         };
-        inst.addTransformer(ClassFileTransformers.skipBootstrapped(externalProfilingTransformer));
+        inst.addTransformer(ClassFileTransformers.filterByClassName(stringConstructorCheckTransformer, stringClass));
+
+
+//        inst.addTransformer(ClassFileTransformers.skipBootstrapped(externalProfilingTransformer));
 //        inst.addTransformer(ClassFileTransformers.filterByClassName(ClassFileTransformers.ClassPrinter, startsWithEdu));
     }
 
