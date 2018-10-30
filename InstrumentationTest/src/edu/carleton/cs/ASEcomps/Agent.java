@@ -16,7 +16,6 @@ import java.util.function.Predicate;
 public class Agent {
     public static void premain(String premainArgs, Instrumentation inst) {
         //inst.addTransformer(testTransformer());
-
         Predicate<String> startsWithEdu = (s) -> s.startsWith("edu/");
         Predicate<String> notJava = (s) -> !s.startsWith("java/");
         Predicate<String> stringClass = (s) -> s.contains("java/lang");
@@ -39,27 +38,30 @@ public class Agent {
 
         ClassFileTransformer stringConstructorCheckTransformer = (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
         {
-            System.out.println("Transforming java/lang/String...");
+//            System.out.println("Transforming " + className + "..." + (loader == null ? " (bootstrap)" : loader.toString()));
+            if (className.equals("edu/carleton/cs/ASEcomps/StringChecker")) {return null;}
             ClassReader cr = new ClassReader(classfileBuffer);
-            ClassWriter cw = new ClassWriter(cr, 0);
+            ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
             try {
-                ConstructorCheckAdder cv = new ConstructorCheckAdder(Opcodes.ASM6, cw);
+                StringReturnCheckAdder cv = new StringReturnCheckAdder(Opcodes.ASM6, cw, className);
                 cr.accept(cv, ClassReader.EXPAND_FRAMES);
             } catch (Throwable t) {
                 t.printStackTrace();
             }
             return cw.toByteArray();
         };
-        inst.addTransformer(ClassFileTransformers.filterByClassName(stringConstructorCheckTransformer, stringClass));
+        inst.addTransformer(ClassFileTransformers.skipBootstrapped(stringConstructorCheckTransformer));
+//        try {
+//            inst.retransformClasses(StringChecker.class, String.class);
+//        } catch (UnmodifiableClassException e) {
+//            e.printStackTrace();
+//        }
 
 
 //        inst.addTransformer(ClassFileTransformers.skipBootstrapped(externalProfilingTransformer));
 //        inst.addTransformer(ClassFileTransformers.filterByClassName(ClassFileTransformers.ClassPrinter, startsWithEdu));
     }
 
-    public static void agentMain(String agentargs, Instrumentation inst) {
-
-    }
 
     private static ClassFileTransformer testTransformer() {
         return new ClassFileTransformer() {
