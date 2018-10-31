@@ -11,10 +11,12 @@
     Enter short description for your plugin here.&lt;br&gt;
     &lt;em&gt;most HTML tags may be used&lt;/em&gt;
     </description>
-  <extensions defaultExtensionNs="com.intellij"/>
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="Test Tool Window" secondary="true" anchor="bottom" factoryClass="TestAction"/>
+  </extensions>
   <actions>
     <action id="RuntimeSearchDropdown" class="RuntimeSearchDropdown" text="Debug with RuntimeSearch..." description="...">
-      <add-to-group group-id="RunMenu" anchor="before" relative-to-action="ChooseDebugConfiguration"/>
+      <add-to-group group-id="RunMenu" anchor="before" relative-to-action="Android.ChooseProfileConfiguration"/>
     </action>
   </actions>
 </idea-plugin>

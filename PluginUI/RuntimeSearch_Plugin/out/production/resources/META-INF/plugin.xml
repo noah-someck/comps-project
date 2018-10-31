@@ -15,13 +15,15 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Test Tool Window" secondary="true" anchor="bottom"
+                    factoryClass="TestAction"/>
         <!-- Add your extensions here -->
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
         <action id="RuntimeSearchDropdown" class="RuntimeSearchDropdown" text="Debug with RuntimeSearch..." description="...">
-            <add-to-group group-id="RunMenu" anchor="after" relative-to-action="ChooseDebugConfiguration"/>
+            <add-to-group group-id="RunMenu" anchor="before" relative-to-action="Android.ChooseProfileConfiguration"/>
         </action>
     </actions>
 </idea-plugin>
