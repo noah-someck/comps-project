@@ -1,15 +1,23 @@
 <application>
+  <component name="ActionsCollector">
+    <counts>
+      <entry action="ActivateTestToolWindowToolWindow" count="1" />
+      <entry action="RestoreDefaultLayout" count="1" />
+      <entry action="third.party.plugin.action" count="4" />
+    </counts>
+  </component>
   <component name="FUSApplicationUsageTrigger">
     <session id="655482535">
       <usages-collector id="statistics.lifecycle.app">
         <counts>
-          <entry key="ide.close" value="1" />
-          <entry key="ide.start" value="1" />
+          <entry key="ide.close" value="14" />
+          <entry key="ide.error" value="5" />
+          <entry key="ide.start" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.ui.tips">
         <counts>
-          <entry key="shown.automatically" value="1" />
+          <entry key="shown.automatically" value="14" />
         </counts>
       </usages-collector>
     </session>
@@ -101,15 +109,32 @@
       <option name="lastDate" value="0" />
     </fixesStatsTag>
   </component>
+  <component name="MainMenuCollector">
+    <counts>
+      <entry path="View -&gt; Tool Windows -&gt; Test Tool Window" count="1" />
+      <entry path="Window -&gt; Restore Default Layout" count="1" />
+    </counts>
+  </component>
   <component name="ToolWindowCollector">
     <counts>
-      <entry toolWindow="Project by Activation" count="1" />
+      <entry toolWindow="Favorites by Activation" count="2" />
+      <entry toolWindow="Project by Activation" count="17" />
+      <entry toolWindow="Sample Calendar by Activation" count="1" />
+      <entry toolWindow="TODO by Activation" count="7" />
+      <entry toolWindow="Test Tool Window by Activation" count="11" />
+    </counts>
+  </component>
+  <component name="ToolbarClicksCollector">
+    <counts>
+      <entry action="Show Options@ToolWindowHeader" count="5" />
+      <entry action="com.intellij.openapi.wm.impl.ToolWindowHeader$ShowOptionsAction@ToolwindowTitle" count="5" />
     </counts>
   </component>
   <component name="UsageTrigger">
     <counts>
-      <entry feature="ideaapp.started" count="1" />
-      <entry feature="welcome.screen.WelcomeScreen.OpenProject" count="2" />
+      <entry feature="StripeButton[Test Tool Window].hidden" count="1" />
+      <entry feature="ideaapp.started" count="15" />
+      <entry feature="welcome.screen.WelcomeScreen.OpenProject" count="3" />
     </counts>
   </component>
   <component name="UsagesStatistic" show-notification="false" />
