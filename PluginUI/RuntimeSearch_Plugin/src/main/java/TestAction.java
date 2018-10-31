@@ -21,9 +21,11 @@ public class TestAction implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-        myToolWindow = toolWindow;
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
-        toolWindow.getContentManager().addContent(content);
+//        myToolWindow = toolWindow;
+//        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+//        Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
+//        toolWindow.getContentManager().addContent(content);
+
+        toolWindow.getComponent().add(new TestGUI().getPanel1());
     }
 }
