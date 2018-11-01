@@ -40,9 +40,12 @@ public class Agent {
         {
 //            System.out.println("Transforming " + className + "..." + (loader == null ? " (bootstrap)" : loader.toString()));
             if (className.equals("edu/carleton/cs/ASEcomps/StringChecker")) {return null;}
+            if (className.equals("edu/carleton/cs/ASEcomps/StringSearchHolder")) {return null;}
             ClassReader cr = new ClassReader(classfileBuffer);
             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
             try {
+//                StringReturnCheckAdderV1 cv1 = new StringReturnCheckAdderV1(Opcodes.ASM6, cw, className);
+//                cr.accept(cv1, ClassReader.EXPAND_FRAMES);
                 StringReturnCheckAdder cv = new StringReturnCheckAdder(Opcodes.ASM6, cw, className);
                 cr.accept(cv, ClassReader.EXPAND_FRAMES);
             } catch (Throwable t) {
