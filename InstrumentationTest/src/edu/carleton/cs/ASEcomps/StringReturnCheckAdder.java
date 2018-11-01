@@ -1,6 +1,7 @@
 package edu.carleton.cs.ASEcomps;
 
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.util.Textifier;
@@ -20,35 +21,60 @@ public class StringReturnCheckAdder extends ClassVisitor {
         MethodVisitor methodStringReturnCheckAdder = new MethodVisitor(Opcodes.ASM6, baseMv) {
             @Override
             public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
+                super.visitFieldInsn(opcode, owner, name, descriptor);
                 if ((opcode == Opcodes.GETSTATIC || opcode == Opcodes.GETFIELD) && descriptor.equals("Ljava/lang/String;")) {
-                    Textifier textifier = new Textifier();
-                    MethodVisitor tracer = new TraceMethodVisitor(mv, textifier);
-                    tracer.visitFieldInsn(opcode, owner, name, descriptor); // takes care of super.visitFieldInsn
 
                     super.visitInsn(Opcodes.DUP); // put the string on stack
-                    super.visitLdcInsn(className + "." + methodName); // put full method name on stack
-                    super.visitLdcInsn(textifier.text.get(0)); // put text of bytecode instruction on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringChecker", "check", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", false);
-                } else {
-                    super.visitFieldInsn(opcode, owner, name, descriptor);
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+
+                    super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
             }
 
             @Override
             public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+                super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                 if (descriptor.endsWith(")Ljava/lang/String;")) {
-                    Textifier textifier = new Textifier();
-                    MethodVisitor tracer = new TraceMethodVisitor(mv, textifier);
-                    tracer.visitMethodInsn(opcode, owner, name, descriptor, isInterface); // takes care of super.visitMethodInsn
 
                     super.visitInsn(Opcodes.DUP); // put the string on stack
-                    super.visitLdcInsn(className + "." + methodName); // put full method name on stack
-                    super.visitLdcInsn(textifier.text.get(0)); // put text of bytecode instruction on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringChecker", "check", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", false);
-                } else {
-                    super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+
+                    super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
+                }
+            }
+
+            @Override
+            public void visitLdcInsn(Object value) {
+                super.visitLdcInsn(value);
+                if (value instanceof String) {
+                    super.visitInsn(Opcodes.DUP); // put the string on stack
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+
+                    super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
+                }
+            }
+
+            @Override
+            public void visitInsn(int opcode) {
+                super.visitInsn(opcode);
+                if (opcode == Opcodes.AALOAD) {
+                    super.visitInsn(Opcodes.DUP); // put the string on stack
+                    super.visitTypeInsn(Opcodes.INSTANCEOF, "Ljava/lang/String;");
+                    Label compareLabel = new Label();
+                    super.visitJumpInsn(Opcodes.IFEQ, compareLabel);
+
+                    // BEGIN this if object loaded from array is a String
+                    super.visitInsn(Opcodes.DUP); // put the string on stack
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+
+                    super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
+                    // END
+
+                    super.visitLabel(compareLabel);
                 }
             }
 

@@ -1,7 +1,7 @@
 package edu.carleton.cs.ASEcomps;
 
 public class Main {
-    public static String var = "purple";
+//    public static String var = "Helloworld";
 
     private static double manySines(double d, int count) {
         for (int i=0; i<count; i++) {
@@ -17,30 +17,45 @@ public class Main {
         return d;
     }
 
+    private static String returnString() {
+        return "test";
+    }
+
+    private static String[] returnStringArray() {
+        String x = "Helloworld";
+        String[] test = new String[1];
+        test[0] = x;
+        return test;
+    }
+
+    private static int[] returnIntArray() {
+        int x = 1;
+        int[] test = new int[1];
+        test[0] = x;
+        return test;
+    }
+
     private static void immutablecheck(String s) {
         s = "different";
     }
 
     public static void main(String[] args) {
-        String x = "Hello";
-//        Main cl = new Main();
-//        String y = x;
-//        x = "2";
-        x += "world";
-        immutablecheck(x);
-        System.out.println(x);
-        System.out.println(var);
-//        double x = 0;
-//        for (int i = 0; i<5; i++) {
-//            x = manySines(x, 1_000_000);
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            x = manyCosines(x, 3_000_000);
-//        }
+//        String test = "Monkey";
+//        String x = "Hello";
 //
-//        System.out.println("Result: " + x);
+//        x += "world";
+//        immutablecheck(x);
+//
+//        returnString();
+
+//        String x = "Helloworld";
+//        String[] test = new String[1];
+//        test[0] = x;
+
+        String[] stringArray = returnStringArray();
+        String y = stringArray[0];
+
+//        int[] intArray = returnIntArray();
+//        int y = intArray[0];
     }
 }
