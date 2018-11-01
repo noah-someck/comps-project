@@ -1,0 +1,17 @@
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027343629,"group":{"id":"lifecycle","version":"2"},"event":{"count":1,"data":{},"id":"ideaapp.started"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027343658,"group":{"id":"lifecycle","version":"2"},"event":{"count":1,"data":{},"id":"app.started"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027345644,"group":{"id":"ui.dialogs","version":"2"},"event":{"count":1,"data":{"type":"show"},"id":"com.intellij.openapi.progress.util.ProgressDialog$MyDialogWrapper"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027345846,"group":{"id":"lifecycle","version":"2"},"event":{"count":1,"data":{"mappingFailed":false,"oom":false},"id":"ide.error"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027346483,"group":{"id":"ui.dialogs","version":"2"},"event":{"count":1,"data":{"code":1,"type":"close"},"id":"com.intellij.openapi.progress.util.ProgressDialog$MyDialogWrapper"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027346504,"group":{"id":"lifecycle","version":"2"},"event":{"count":1,"data":{},"id":"project.opened"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027347240,"group":{"id":"ui.dialogs","version":"2"},"event":{"count":1,"data":{"type":"show"},"id":"com.intellij.openapi.progress.util.ProgressDialog$MyDialogWrapper"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027347391,"group":{"id":"toolwindow","version":"2"},"event":{"count":1,"data":{},"id":"Project_by_Activation"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027347686,"group":{"id":"lifecycle","version":"2"},"event":{"count":1,"data":{"mappingFailed":false,"oom":false},"id":"ide.error"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027347870,"group":{"id":"ui.dialogs","version":"2"},"event":{"count":1,"data":{"type":"show"},"id":"com.intellij.ide.util.TipDialog"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027348093,"group":{"id":"ui.dialogs","version":"2"},"event":{"count":1,"data":{"code":1,"type":"close"},"id":"com.intellij.openapi.progress.util.ProgressDialog$MyDialogWrapper"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027348405,"group":{"id":"lifecycle","version":"2"},"event":{"count":1,"data":{"time.ms":3099},"id":"project.opening.finished"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027349129,"group":{"id":"system.os.name","version":"2"},"event":{"data":{},"id":"Mac.OS.X"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027349130,"group":{"id":"system.os.version","version":"2"},"event":{"data":{},"id":"10.13.6"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027349130,"group":{"id":"system.jvm.vendor","version":"2"},"event":{"data":{},"id":"JetBrains_s.r.o"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027349131,"group":{"id":"system.jvm.version","version":"2"},"event":{"data":{},"id":"1.8"}}
+{"session":"65121bca00f9","build":"182.4892.20","bucket":"-1","time":1541027349736,"group":{"id":"ui.dialogs","version":"2"},"event":{"count":1,"data":{"code":1,"type":"close"},"id":"com.intellij.ide.util.TipDialog"}}
