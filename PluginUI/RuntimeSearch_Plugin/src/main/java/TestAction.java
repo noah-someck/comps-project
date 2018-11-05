@@ -28,5 +28,6 @@ public class TestAction implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(content);
 
 //        toolWindow.getComponent().add(new TestGUI().getPanel1());
+        //toolwindow.getContents();
     }
 }
