@@ -7,6 +7,7 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.*;
 
 
 public class TestAction implements ToolWindowFactory {
@@ -23,11 +24,18 @@ public class TestAction implements ToolWindowFactory {
         myToolWindow = toolWindow;
         myToolWindowContent = new JPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        myToolWindowContent.setLayout(new GridBagLayout());
+        JLabel label = new JLabel("Search for a string:");
+        JTextField searchBar = new JTextField(20);
+        myToolWindowContent.add(label);
+        myToolWindowContent.add(searchBar);
+
         Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
         System.out.println(myToolWindowContent);
         toolWindow.getContentManager().addContent(content);
 
+
 //        toolWindow.getComponent().add(new TestGUI().getPanel1());
-        //toolwindow.getContents();
+
     }
 }
