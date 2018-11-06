@@ -85,8 +85,6 @@ public class StringReturnCheckAdder extends ClassVisitor {
                     super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
-
-                    super.visitInsn(202);
                 }
             }
         };
