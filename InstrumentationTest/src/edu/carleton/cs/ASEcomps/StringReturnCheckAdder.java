@@ -79,15 +79,16 @@ public class StringReturnCheckAdder extends ClassVisitor {
             @Override
             public void visitTypeInsn(int opcode, String type) {
                 super.visitTypeInsn(opcode, type);
-                if (opcode == Opcodes.CHECKCAST && type.equals("Ljava/lang/String;")) { // Cover (in most? cases) Strings that were cast from another class
+                if (opcode == Opcodes.CHECKCAST && type.equals("java/lang/String")) { // Cover (in most? cases) Strings that were cast from another class
                     super.visitInsn(Opcodes.DUP); // put the string on stack
 
                     super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
+
+                    super.visitInsn(202);
                 }
             }
-
         };
         return methodStringReturnCheckAdder;
     }
