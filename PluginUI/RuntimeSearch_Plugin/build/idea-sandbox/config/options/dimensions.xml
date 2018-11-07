@@ -1,11 +1,12 @@
 <application>
   <component name="DimensionService">
-    <location key="new project wizard.0.0.2880.1800@192dpi" x="710" y="46" />
-    <location key="WELCOME_SCREEN.0.0.2880.1800@192dpi" x="1438" y="776" />
-    <location key="com.intellij.ide.util.TipDialog.0.0.2880.1800@192dpi" x="752" y="538" />
-    <location key="#Project_Structure.0.0.2880.1800@192dpi" x="416" y="46" />
-    <location key="IDE.errors.dialog.0.0.2880.1800@192dpi" x="612" y="352" />
-    <size key="#Project_Structure.0.0.2880.1800@192dpi" width="2048" height="1656" />
-    <size key="IDE.errors.dialog.0.0.2880.1800@192dpi" width="1648" height="1284" />
+    <location key="new project wizard.0.0.1920.1080@120dpi" x="476" y="0" />
+    <location key="FileChooserDialogImpl.0.0.1920.1080@120dpi" x="648" y="175" />
+    <location key="WELCOME_SCREEN.0.0.1920.1080@120dpi" x="963" y="453" />
+    <location key="com.intellij.ide.util.TipDialog.0.0.1920.1080@120dpi" x="596" y="299" />
+    <location key="IDE.errors.dialog.0.0.1920.1080@120dpi" x="129" y="18" />
+    <location key="SettingsEditor.0.0.1920.1080@120dpi" x="331" y="74" />
+    <size key="new project wizard.0.0.1920.1080@120dpi" width="924" height="959" />
+    <size key="IDE.errors.dialog.0.0.1920.1080@120dpi" width="1778" height="999" />
   </component>
 </application>
