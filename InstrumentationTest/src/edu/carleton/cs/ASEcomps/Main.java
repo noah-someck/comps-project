@@ -51,9 +51,12 @@ public class Main {
 //        String x = "Helloworld";
 //        String[] test = new String[1];
 //        test[0] = x;
-
-        String[] stringArray = returnStringArray();
-        String y = stringArray[0];
+//
+//        String[] stringArray = returnStringArray();
+//        String y = stringArray[0];
+        Object str = "Helloworld";
+        String string = (String) str;
+        str = "yes";
 
 //        int[] intArray = returnIntArray();
 //        int y = intArray[0];
