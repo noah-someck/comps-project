@@ -30,6 +30,9 @@ public class TestAction implements ToolWindowFactory {
         myToolWindowContent.add(label);
         myToolWindowContent.add(searchBar);
 
+        JButton myButton = new JButton("Find Next");
+        myToolWindowContent.add(myButton);
+
         Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
         System.out.println(myToolWindowContent);
         toolWindow.getContentManager().addContent(content);
