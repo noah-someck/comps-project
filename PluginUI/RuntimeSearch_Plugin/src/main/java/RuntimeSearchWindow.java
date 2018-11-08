@@ -8,9 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class RSWindow implements ToolWindowFactory {
+public class RuntimeSearchWindow implements ToolWindowFactory {
 
     private JButton refreshToolWindowButton;
     private JButton hideToolWindowButton;
@@ -38,11 +40,26 @@ public class RSWindow implements ToolWindowFactory {
         myToolWindowContent.add(searchBar);
 
         JButton myButton = new JButton("Find Next");
+        myButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                String s = searchBar.getText().trim();
+                if (!s.equals("")) {
+                    searchBar.setText(s);
+                    passInputString(s);
+                    System.out.println(s);
+                }
+            }
+        });
         myToolWindowContent.add(myButton);
 
         Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
         System.out.println(myToolWindowContent);
         toolWindow.getContentManager().addContent(content);
 
+    }
+
+    private void passInputString(String searchQuery){
+        //pass input to backend
     }
 }

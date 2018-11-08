@@ -16,7 +16,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Test Tool Window" secondary="true" anchor="bottom"
-                    factoryClass="RSWindow"/>
+                    factoryClass="RuntimeSearchWindow"/>
     </extensions>
 
     <actions>
