@@ -16,8 +16,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Test Tool Window" secondary="true" anchor="bottom"
-                    factoryClass="TestAction"/>
-         <!--Add your extensions here -->
+                    factoryClass="RSWindow"/>
     </extensions>
 
     <actions>
