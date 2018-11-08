@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class TestAction implements ToolWindowFactory {
+public class RSWindow implements ToolWindowFactory {
 
     private JButton refreshToolWindowButton;
     private JButton hideToolWindowButton;
@@ -43,9 +43,6 @@ public class TestAction implements ToolWindowFactory {
         Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
         System.out.println(myToolWindowContent);
         toolWindow.getContentManager().addContent(content);
-
-
-//        toolWindow.getComponent().add(new TestGUI().getPanel1());
 
     }
 }
