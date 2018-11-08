@@ -1,6 +1,5 @@
 package edu.carleton.cs.ASEcomps;
 
-import com.sun.istack.internal.NotNull;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 import org.objectweb.asm.util.Textifier;
@@ -19,7 +18,7 @@ public interface ClassFileTransformers {
      * @return A ClassFileTransformer that applies given transformer on a class if the class's name satisfies the given
      * predicate, and otherwise passes the class through unchanged.
      */
-    public static ClassFileTransformer filterByClassName(@NotNull ClassFileTransformer transformer, Predicate<String> stringPredicate) {
+    public static ClassFileTransformer filterByClassName(ClassFileTransformer transformer, Predicate<String> stringPredicate) {
         return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) -> {
             if (stringPredicate.test(className))
                 return transformer.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
@@ -76,7 +75,7 @@ public interface ClassFileTransformers {
      * @param transformer
      * @return
      */
-    public static ClassFileTransformer skipBootstrapped(@NotNull ClassFileTransformer transformer) {
+    public static ClassFileTransformer skipBootstrapped(ClassFileTransformer transformer) {
         return (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) -> {
             if (loader == null) return null;
             return transformer.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
