@@ -22,6 +22,13 @@ public class TestAction implements ToolWindowFactory {
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         myToolWindow = toolWindow;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        };
+        toolWindow.hide(runnable);
         myToolWindowContent = new JPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         myToolWindowContent.setLayout(new GridBagLayout());
