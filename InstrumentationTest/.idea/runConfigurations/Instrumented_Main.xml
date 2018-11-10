@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Instrumented Main" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="edu.carleton.cs.ASEcomps.Main" />
+    <module name="InstrumentationTest" />
+    <option name="VM_PARAMETERS" value="-javaagent:&quot;target/InstrumentationTest-1.0-SNAPSHOT-agent.jar&quot;" />
+    <method v="2">
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="package" />
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
