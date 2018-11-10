@@ -22,7 +22,7 @@
     <actions>
         <!-- Add your actions here -->
         <action id="RuntimeSearchDropdown" class="RuntimeSearchDropdown" text="Debug with RuntimeSearch..."
-                description="Open RuntimeSearch Window to start debugging" icon="images/RSlogo.png">
+                description="Open RuntimeSearch Window to start debugging" icon="images/RSlogo2.png">
             <add-to-group group-id="RunMenu" anchor="before" relative-to-action="Android.ChooseProfileConfiguration"/>
         </action>
     </actions>
