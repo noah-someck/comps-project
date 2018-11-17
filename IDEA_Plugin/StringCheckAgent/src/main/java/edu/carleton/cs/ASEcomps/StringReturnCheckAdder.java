@@ -1,8 +1,6 @@
 package edu.carleton.cs.ASEcomps;
 
 import org.objectweb.asm.*;
-import org.objectweb.asm.util.Textifier;
-import org.objectweb.asm.util.TraceMethodVisitor;
 
 public class StringReturnCheckAdder extends ClassVisitor {
     private final String className;

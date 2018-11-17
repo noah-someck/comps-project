@@ -1,0 +1,32 @@
+plugins {
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
+    id 'org.jetbrains.intellij' version '0.3.12'
+}
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.ow2.asm:asm:6.2.1'
+    api 'org.ow2.asm:asm-util:6.2.1'
+    api 'org.ow2.asm:asm-commons:6.2.1'
+    runtimeOnly ':SharedSingletons'
+}
+
+task agentJar(type: Jar) {
+    dependencies {
+        implementation 'org.ow2.asm:asm:6.2.1'
+        implementation 'org.ow2.asm:asm-util:6.2.1'
+        implementation 'org.ow2.asm:asm-commons:6.2.1'
+        runtimeOnly ':SharedSingletons'
+    }
+    
+
+}
+
+intellij {
+    version '2018.2.5'
+}
