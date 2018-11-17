@@ -16,14 +16,17 @@ dependencies {
     runtimeOnly ':SharedSingletons'
 }
 
-task agentJar(type: Jar) {
-    dependencies {
-        implementation 'org.ow2.asm:asm:6.2.1'
-        implementation 'org.ow2.asm:asm-util:6.2.1'
-        implementation 'org.ow2.asm:asm-commons:6.2.1'
-        runtimeOnly ':SharedSingletons'
+sourceSets {
+    old {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
     }
-    
+}
+
+task agentJar(type: Jar) {
+    classifier = 'agent'
+    manifest {['Premain-Class': 'edu.carleton.cs.ASEcomps.Agent']}
+    from sourceSets.main.output
 
 }
 

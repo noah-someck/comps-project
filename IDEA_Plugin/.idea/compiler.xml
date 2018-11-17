@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="USE_RELEASE_OPTION" value="false" />
+    <bytecodeTargetLevel>
+      <module name="PluginUI_main" target="1.8" />
+      <module name="PluginUI_test" target="1.8" />
+      <module name="SharedSingletons_main" target="1.8" />
+      <module name="SharedSingletons_test" target="1.8" />
+      <module name="StringCheckAgent_main" target="1.8" />
+      <module name="StringCheckAgent_old" target="1.8" />
+      <module name="StringCheckAgent_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

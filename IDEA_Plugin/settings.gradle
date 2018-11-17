@@ -8,3 +8,4 @@
  */
 
 rootProject.name = 'IDEA_Plugin'
+include 'SharedSingletons', 'StringCheckAgent', 'PluginUI'
