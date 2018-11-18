@@ -32,7 +32,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private JLabel timeZone;
     private JPanel myToolWindowContent;
     private ToolWindow myToolWindow;
-    private static boolean SWITCH = false;
+    private static boolean INITIALIZED = false;
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         myToolWindow = toolWindow;
@@ -55,39 +55,12 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
+                System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 String s = searchBar.getText().trim();
                 if (!s.equals("")) {
                     searchBar.setText(s);
-                    passInputString(s);
+                    passInputString(s, project);
                     System.out.println(s);
-                }
-                int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-                String file = BreakpointDataHolder.getInstance().getFile();
-                if (SWITCH) {
-                    DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
-                            .addLineBreakpoint(FileDocumentManager.getInstance()
-                                            .getDocument(LocalFileSystem.getInstance()
-                                                    .findFileByIoFile(new File(file))),
-                                    lineNumber);
-                    SWITCH = false;
-                }
-                else {
-                    List<Breakpoint> breakpoints = DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints();
-                    for (int i = 0; i < breakpoints.size(); i++) {
-                        XBreakpoint breakpoint = breakpoints.get(i).getXBreakpoint();
-                        if (!breakpoint.isEnabled()) {
-                            continue;
-                        }
-                        int bpLineNumber = breakpoint.getSourcePosition().getLine();
-                        String bpFile = breakpoint.getSourcePosition().getFile().getPath();
-                        if (bpLineNumber == lineNumber && bpFile.equals(file)) {
-                            DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
-                            .removeBreakpoint(DebuggerManagerEx.getInstanceEx(project)
-                                    .getBreakpointManager().getBreakpoints().get(i));
-                            break;
-                        }
-                    }
-                    SWITCH = true;
                 }
             }
 
@@ -100,7 +73,42 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     }
 
-    private void passInputString(String searchQuery){
-        //pass input to backend
+    private void passInputString(String searchQuery, Project project) {
+        if (INITIALIZED == false){
+            //initialize backup startup thingy
+        }
+        removeBreakpoint(project);
+        //TODO: call their singleton to update BreakpointDataHolder??
+        addBreakpoint(project);
+    }
+
+    private void removeBreakpoint(Project project) {
+        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
+        String file = BreakpointDataHolder.getInstance().getFile();
+        List<Breakpoint> breakpoints = DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints();
+        for (int i = 0; i < breakpoints.size(); i++) {
+            XBreakpoint breakpoint = breakpoints.get(i).getXBreakpoint();
+            if (!breakpoint.isEnabled()) {
+                continue;
+            }
+            int bpLineNumber = breakpoint.getSourcePosition().getLine();
+            String bpFile = breakpoint.getSourcePosition().getFile().getPath();
+            if (bpLineNumber == lineNumber && bpFile.equals(file)) {
+                DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
+                        .removeBreakpoint(DebuggerManagerEx.getInstanceEx(project)
+                                .getBreakpointManager().getBreakpoints().get(i));
+                break;
+            }
+        }
+    }
+
+    private void addBreakpoint(Project project) {
+        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
+        String file = BreakpointDataHolder.getInstance().getFile();
+        DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
+                .addLineBreakpoint(FileDocumentManager.getInstance()
+                                .getDocument(LocalFileSystem.getInstance()
+                                        .findFileByIoFile(new File(file))),
+                        lineNumber);
     }
 }

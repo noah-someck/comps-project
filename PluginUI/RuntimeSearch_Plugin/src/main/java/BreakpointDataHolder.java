@@ -6,7 +6,7 @@ public class BreakpointDataHolder {
     private int lineNumber;
 
     private BreakpointDataHolder() {
-        file = "/Users/Noah/IdeaProjects/untitled2/src/Main.java";
+        file = "C:/Users/T/demoplugin/src/main/java/HelloAction.java";
         lineNumber = 6;
     }
 
