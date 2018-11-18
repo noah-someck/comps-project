@@ -27,10 +27,12 @@ public class StringSearchHolder {
         return stringSearch;
     }
 
-    public static boolean checkStringSearch(String comparedString, String className) {
+    public static boolean checkStringSearch(String comparedString, String className, String file, int lineNumber) {
         if (comparedString.contains(getInstance().getStringSearch())) {
             System.out.println("Match!");
             System.out.println(className);
+            System.out.println(file);
+            System.out.println(lineNumber);
         }
         return getInstance().getStringSearch().contains(comparedString);
     }

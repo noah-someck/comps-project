@@ -6,10 +6,18 @@ import org.objectweb.asm.util.TraceMethodVisitor;
 
 public class StringReturnCheckAdder extends ClassVisitor {
     private final String className;
+    private static int lineNumber;
+    private static String file;
 
     public StringReturnCheckAdder(int api, ClassVisitor classVisitor, String className) {
         super(api, classVisitor);
         this.className = className;
+    }
+
+    @Override
+    public void visitSource(String source, String debug) {
+        super.visitSource(source, debug);
+        file = source;
     }
 
     @Override
@@ -25,7 +33,11 @@ public class StringReturnCheckAdder extends ClassVisitor {
 
                     super.visitLdcInsn(className);
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(file);
+
+                    super.visitLdcInsn(lineNumber);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
@@ -39,7 +51,11 @@ public class StringReturnCheckAdder extends ClassVisitor {
 
                     super.visitLdcInsn(className);
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(file);
+
+                    super.visitLdcInsn(lineNumber);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
@@ -53,7 +69,11 @@ public class StringReturnCheckAdder extends ClassVisitor {
 
                     super.visitLdcInsn(className);
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(file);
+
+                    super.visitLdcInsn(lineNumber);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
@@ -73,7 +93,11 @@ public class StringReturnCheckAdder extends ClassVisitor {
 
                     super.visitLdcInsn(className);
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(file);
+
+                    super.visitLdcInsn(lineNumber);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                     // END
@@ -90,10 +114,20 @@ public class StringReturnCheckAdder extends ClassVisitor {
 
                     super.visitLdcInsn(className);
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(file);
+
+                    super.visitLdcInsn(lineNumber);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
+            }
+
+            @Override
+            public void visitLineNumber(int line, Label start) {
+                super.visitLineNumber(line, start);
+                lineNumber = line;
             }
         };
         return methodStringReturnCheckAdder;
