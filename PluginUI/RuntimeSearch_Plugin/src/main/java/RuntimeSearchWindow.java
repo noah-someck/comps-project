@@ -1,4 +1,5 @@
 import com.intellij.debugger.DebuggerManagerEx;
+import com.intellij.debugger.ui.breakpoints.Breakpoint;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -10,6 +11,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -17,6 +19,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.*;
+import java.util.List;
 
 
 public class RuntimeSearchWindow implements ToolWindowFactory {
@@ -57,18 +61,32 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     passInputString(s);
                     System.out.println(s);
                 }
+                int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
+                String file = BreakpointDataHolder.getInstance().getFile();
                 if (SWITCH) {
                     DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
                             .addLineBreakpoint(FileDocumentManager.getInstance()
                                             .getDocument(LocalFileSystem.getInstance()
-                                                    .findFileByIoFile(new File(BreakpointDataHolder.getInstance().getFile()))),
-                                    BreakpointDataHolder.getInstance().getLineNumber());
+                                                    .findFileByIoFile(new File(file))),
+                                    lineNumber);
                     SWITCH = false;
                 }
                 else {
-                    DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
-                            .removeBreakpoint(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints()
-                                    .get(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size() - 1));
+                    List<Breakpoint> breakpoints = DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints();
+                    for (int i = 0; i < breakpoints.size(); i++) {
+                        XBreakpoint breakpoint = breakpoints.get(i).getXBreakpoint();
+                        if (!breakpoint.isEnabled()) {
+                            continue;
+                        }
+                        int bpLineNumber = breakpoint.getSourcePosition().getLine();
+                        String bpFile = breakpoint.getSourcePosition().getFile().getPath();
+                        if (bpLineNumber == lineNumber && bpFile.equals(file)) {
+                            DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
+                            .removeBreakpoint(DebuggerManagerEx.getInstanceEx(project)
+                                    .getBreakpointManager().getBreakpoints().get(i));
+                            break;
+                        }
+                    }
                     SWITCH = true;
                 }
             }
