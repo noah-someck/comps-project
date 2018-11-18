@@ -1,16 +1,2 @@
 .DS_Store
-
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/fileChanges/last-build.bin
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/fileContent/annotation-processors.bin
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/fileContent/fileContent.lock
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/fileHashes/fileHashes.bin
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/fileHashes/fileHashes.lock
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/fileHashes/resourceHashesCache.bin
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/taskHistory/taskHistory.bin
-PluginUI/RuntimeSearch_Plugin/.gradle/4.8/taskHistory/taskHistory.lock
-PluginUI/RuntimeSearch_Plugin/.gradle/buildOutputCleanup/buildOutputCleanup.lock
-PluginUI/RuntimeSearch_Plugin/.gradle/buildOutputCleanup/cache.properties
-PluginUI/RuntimeSearch_Plugin/.gradle/buildOutputCleanup/outputFiles.bin
-PluginUI/RuntimeSearch_Plugin/.gradle/vcsWorkingDirs/gc.properties
-PluginUI/RuntimeSearch_Plugin/.idea/compiler.xml
-PluginUI/RuntimeSearch_Plugin/.idea/misc.xml
+**/.gradle
