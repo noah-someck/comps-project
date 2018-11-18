@@ -27,9 +27,10 @@ public class StringSearchHolder {
         return stringSearch;
     }
 
-    public static boolean checkStringSearch(String comparedString) {
+    public static boolean checkStringSearch(String comparedString, String className) {
         if (comparedString.contains(getInstance().getStringSearch())) {
             System.out.println("Match!");
+            System.out.println(className);
         }
         return getInstance().getStringSearch().contains(comparedString);
     }

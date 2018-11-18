@@ -21,10 +21,11 @@ public class StringReturnCheckAdder extends ClassVisitor {
                 super.visitFieldInsn(opcode, owner, name, descriptor);
                 // Covers Strings gotten from instance or class fields:
                 if ((opcode == Opcodes.GETSTATIC || opcode == Opcodes.GETFIELD) && descriptor.equals("Ljava/lang/String;")) {
-
                     super.visitInsn(Opcodes.DUP); // put the string on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(className);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
@@ -34,10 +35,11 @@ public class StringReturnCheckAdder extends ClassVisitor {
             public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
                 super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                 if (descriptor.endsWith(")Ljava/lang/String;")) { // Covers method invocations which return String
-
                     super.visitInsn(Opcodes.DUP); // put the string on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(className);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
@@ -49,7 +51,9 @@ public class StringReturnCheckAdder extends ClassVisitor {
                 if (value instanceof String) { // Covers loads from the constant pool
                     super.visitInsn(Opcodes.DUP); // put the string on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(className);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
@@ -67,7 +71,9 @@ public class StringReturnCheckAdder extends ClassVisitor {
                     // BEGIN this if object loaded from array is a String
                     super.visitInsn(Opcodes.DUP); // put the string on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(className);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                     // END
@@ -82,7 +88,9 @@ public class StringReturnCheckAdder extends ClassVisitor {
                 if (opcode == Opcodes.CHECKCAST && type.equals("java/lang/String")) { // Cover (in most? cases) Strings that were cast from another class
                     super.visitInsn(Opcodes.DUP); // put the string on stack
 
-                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;)Z", false);
+                    super.visitLdcInsn(className);
+
+                    super.visitMethodInsn(Opcodes.INVOKESTATIC,"edu/carleton/cs/ASEcomps/StringSearchHolder", "checkStringSearch", "(Ljava/lang/String;Ljava/lang/String;)Z", false);
 
                     super.visitInsn(Opcodes.POP); // pop the boolean returned off stack
                 }
