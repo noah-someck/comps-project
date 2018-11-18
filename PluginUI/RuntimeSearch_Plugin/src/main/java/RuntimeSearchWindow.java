@@ -1,4 +1,10 @@
+import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.openapi.project.Project;
@@ -10,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 
 public class RuntimeSearchWindow implements ToolWindowFactory {
@@ -21,6 +28,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private JLabel timeZone;
     private JPanel myToolWindowContent;
     private ToolWindow myToolWindow;
+    private static boolean SWITCH = false;
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         myToolWindow = toolWindow;
@@ -49,7 +57,22 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     passInputString(s);
                     System.out.println(s);
                 }
+                if (SWITCH) {
+                    DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
+                            .addLineBreakpoint(FileDocumentManager.getInstance()
+                                            .getDocument(LocalFileSystem.getInstance()
+                                                    .findFileByIoFile(new File(BreakpointDataHolder.getInstance().getFile()))),
+                                    BreakpointDataHolder.getInstance().getLineNumber());
+                    SWITCH = false;
+                }
+                else {
+                    DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
+                            .removeBreakpoint(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints()
+                                    .get(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size() - 1));
+                    SWITCH = true;
+                }
             }
+
         });
         myToolWindowContent.add(myButton);
 
