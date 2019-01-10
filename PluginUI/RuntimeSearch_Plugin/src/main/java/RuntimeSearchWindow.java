@@ -57,6 +57,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
             public void actionPerformed(ActionEvent event) {
                 System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 String s = searchBar.getText().trim();
+                System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 if (!s.equals("")) {
                     searchBar.setText(s);
                     passInputString(s, project);
