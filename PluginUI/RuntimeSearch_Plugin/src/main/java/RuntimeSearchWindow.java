@@ -78,6 +78,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                         System.out.println(runConfiguration.getName());
                     }
 
+                    RuntimeSearchExecutor runtimeSearchExecutor = new RuntimeSearchExecutor();
+
                     if (runConfig != null) {
                         System.out.println("worked");
                         try {
