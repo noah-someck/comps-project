@@ -1,9 +1,16 @@
 import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.ui.breakpoints.Breakpoint;
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.RunManager;
+import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.execution.executors.DefaultDebugExecutor;
+import com.intellij.execution.runners.ExecutionEnvironmentBuilder;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.module.ModuleManager;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -59,6 +66,27 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                 String s = searchBar.getText().trim();
                 System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 if (!s.equals("")) {
+
+                    final RunManager runManager = RunManager.getInstance(project);
+                    List<RunConfiguration> runConfigurations = runManager.getAllConfigurationsList();
+
+                    RunConfiguration runConfig = null;
+                    for (RunConfiguration runConfiguration : runConfigurations) {
+                        if (runConfiguration.getName().equals("Main")) {
+                            runConfig = runConfiguration;
+                        }
+                        System.out.println(runConfiguration.getName());
+                    }
+
+                    if (runConfig != null) {
+                        System.out.println("worked");
+                        try {
+                            ExecutionEnvironmentBuilder.create(project, DefaultDebugExecutor.getDebugExecutorInstance(), runConfig).buildAndExecute();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     searchBar.setText(s);
                     passInputString(s, project);
                     System.out.println(s);
@@ -78,6 +106,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         if (INITIALIZED == false){
             //initialize backup startup thingy
         }
+        System.out.println(ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0]);
         removeBreakpoint(project);
         //TODO: call their singleton to update BreakpointDataHolder??
         addBreakpoint(project);

@@ -6,7 +6,7 @@ public class BreakpointDataHolder {
     private int lineNumber;
 
     private BreakpointDataHolder() {
-        file = "/Users/antonnagy/IdeaProjects/Main/src/Main.java";
+        file = "/Users/antonnagy/IdeaProjects/Main/src/Yay.java";
         lineNumber = 6;
     }
 
