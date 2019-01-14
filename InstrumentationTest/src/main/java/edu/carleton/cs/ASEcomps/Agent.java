@@ -23,36 +23,46 @@ public class Agent {
 //        ClassFileTransformer add_printing_timer = ClassFileTransformers.fromClassVisitor(PrintingTimerAdder.class, Opcodes.ASM6, 0, ClassReader.EXPAND_FRAMES);
 //        inst.addTransformer(ClassFileTransformers.skipBootstrapped(add_printing_timer));
 
-//        ClassFileTransformer externalProfilingTransformer = (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
-//        {
-//            ClassReader cr = new ClassReader(classfileBuffer);
-//            ClassWriter cw = new ClassWriter(cr, 0);
-//            try {
-//                ExternalProfilerAdder cv = new ExternalProfilerAdder(Opcodes.ASM6, cw, className);
-//                cr.accept(cv, ClassReader.EXPAND_FRAMES);
-//            } catch (Throwable t) {
-//                t.printStackTrace();
+//        ClassFileTransformer externalProfilingTransformer = new ClassFileTransformer() {
+//            @Override
+//            public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+//                ClassReader cr = new ClassReader(classfileBuffer);
+//                ClassWriter cw = new ClassWriter(cr, 0);
+//                try {
+//                    ExternalProfilerAdder cv = new ExternalProfilerAdder(Opcodes.ASM6, cw, className);
+//                    cr.accept(cv, ClassReader.EXPAND_FRAMES);
+//                } catch (Throwable t) {
+//                    t.printStackTrace();
+//                }
+//                return cw.toByteArray();
 //            }
-//            return cw.toByteArray();
 //        };
 
-        ClassFileTransformer stringConstructorCheckTransformer = (loader, className, classBeingRedefined, protectionDomain, classfileBuffer) ->
-        {
+        ClassFileTransformer stringConstructorCheckTransformer = new ClassFileTransformer() {
+            @Override
+            public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 //            System.out.println("Transforming " + className + "..." + (loader == null ? " (bootstrap)" : loader.toString()));
-            if (className.equals("edu/carleton/cs/ASEcomps/StringChecker")) {return null;}
-            if (className.equals("edu/carleton/cs/ASEcomps/StringSearchHolder")) {return null;}
-            if (className.contains("com/intellij/rt/debugger/")) {return  null;}
-            ClassReader cr = new ClassReader(classfileBuffer);
-            ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
-            try {
+                if (className.equals("edu/carleton/cs/ASEcomps/StringChecker")) {
+                    return null;
+                }
+                if (className.equals("edu/carleton/cs/ASEcomps/StringSearchHolder")) {
+                    return null;
+                }
+                if (className.contains("com/intellij/rt/debugger/")) {
+                    return null;
+                }
+                ClassReader cr = new ClassReader(classfileBuffer);
+                ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
+                try {
 //                StringReturnCheckAdderV1 cv1 = new StringReturnCheckAdderV1(Opcodes.ASM6, cw, className);
 //                cr.accept(cv1, ClassReader.EXPAND_FRAMES);
-                StringReturnCheckAdder cv = new StringReturnCheckAdder(Opcodes.ASM6, cw, className);
-                cr.accept(cv, ClassReader.EXPAND_FRAMES);
-            } catch (Throwable t) {
-                t.printStackTrace();
+                    StringReturnCheckAdder cv = new StringReturnCheckAdder(Opcodes.ASM6, cw, className);
+                    cr.accept(cv, ClassReader.EXPAND_FRAMES);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+                return cw.toByteArray();
             }
-            return cw.toByteArray();
         };
         inst.addTransformer(ClassFileTransformers.skipBootstrapped(stringConstructorCheckTransformer));
 //        try {
