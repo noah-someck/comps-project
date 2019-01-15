@@ -1,5 +1,9 @@
 package edu.carleton.cs.ASEcomps;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.List;
+
 public class Main {
 //    public static String var = "Helloworld";
 
@@ -57,6 +61,15 @@ public class Main {
         Object str = "Helloworld";
         String string = (String) str;
         str = "yes";
+
+        RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
+        List<String> jvmArgs = bean.getInputArguments();
+
+        for (int i = 0; i < jvmArgs.size(); i++) {
+            System.out.println( jvmArgs.get( i ) );
+        }
+
+        System.out.println(System.getProperty("java.class.path"));
 
 //        int[] intArray = returnIntArray();
 //        int y = intArray[0];
