@@ -1,16 +1,16 @@
 import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.ui.breakpoints.Breakpoint;
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.RunManager;
-import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.execution.*;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.executors.DefaultDebugExecutor;
-import com.intellij.execution.runners.ExecutionEnvironmentBuilder;
+import com.intellij.execution.runners.*;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.util.Factory;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
@@ -20,6 +20,7 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,17 +78,38 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                         }
                         System.out.println(runConfiguration.getName());
                     }
-
                     RuntimeSearchExecutor runtimeSearchExecutor = new RuntimeSearchExecutor();
-
                     if (runConfig != null) {
                         System.out.println("worked");
                         try {
-                            ExecutionEnvironmentBuilder.create(project, DefaultDebugExecutor.getDebugExecutorInstance(), runConfig).buildAndExecute();
+//                            ExecutionEnvironmentBuilder.create(project, DefaultDebugExecutor.getDebugExecutorInstance(), runConfig).buildAndExecute();
+                            ExecutionEnvironmentBuilder.create(project, runtimeSearchExecutor, runConfig).buildAndExecute();
+//                            ExecutionEnvironmentBuilder.create(project, runtimeSearchExecutor, runConfig).build();
                         } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
                     }
+
+                    RunConfiguration finalRunConfig = runConfig;
+                    RunProfile runProfile = new RunProfile() {
+                        @Nullable
+                        @Override
+                        public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
+                            CommandLineState commandLineState = (CommandLineState) finalRunConfig.getState(executor, environment);
+                            return commandLineState;
+                        }
+
+                        @Override
+                        public String getName() {
+                            return finalRunConfig.getName();
+                        }
+
+                        @Nullable
+                        @Override
+                        public Icon getIcon() {
+                            return finalRunConfig.getIcon();
+                        }
+                    };
 
                     searchBar.setText(s);
                     passInputString(s, project);
