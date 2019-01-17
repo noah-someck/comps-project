@@ -120,6 +120,15 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         });
         myToolWindowContent.add(myButton);
 
+        searchBar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    myButton.doClick();
+                }
+            }
+        });
+
         Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
         System.out.println(myToolWindowContent);
         toolWindow.getContentManager().addContent(content);
