@@ -26,6 +26,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
@@ -63,9 +65,9 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
+                //System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 String s = searchBar.getText().trim();
-                System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
+                //System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 if (!s.equals("")) {
 
                     final RunManager runManager = RunManager.getInstance(project);
@@ -76,7 +78,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                         if (runConfiguration.getName().equals("Main")) {
                             runConfig = runConfiguration;
                         }
-                        System.out.println(runConfiguration.getName());
+                        //System.out.println(runConfiguration.getName());
                     }
                     RuntimeSearchExecutor runtimeSearchExecutor = new RuntimeSearchExecutor();
                     if (runConfig != null) {
@@ -120,8 +122,17 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         });
         myToolWindowContent.add(myButton);
 
+        searchBar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    myButton.doClick();
+                }
+            }
+        });
+
         Content content = contentFactory.createContent(myToolWindowContent, "Test Tool Action", false);
-        System.out.println(myToolWindowContent);
+        //System.out.println(myToolWindowContent);
         toolWindow.getContentManager().addContent(content);
 
     }
@@ -129,8 +140,9 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private void passInputString(String searchQuery, Project project) {
         if (INITIALIZED == false){
             //initialize backup startup thingy
+            INITIALIZED = true;
         }
-        System.out.println(ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0]);
+        //System.out.println(ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0]);
         removeBreakpoint(project);
         //TODO: call their singleton to update BreakpointDataHolder??
         addBreakpoint(project);
@@ -138,7 +150,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     private void removeBreakpoint(Project project) {
         int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-        String file = BreakpointDataHolder.getInstance().getFile();
+        //String file = BreakpointDataHolder.getInstance().getFile();
+        String file = makeFilePath(project);
         List<Breakpoint> breakpoints = DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints();
         for (int i = 0; i < breakpoints.size(); i++) {
             XBreakpoint breakpoint = breakpoints.get(i).getXBreakpoint();
@@ -158,11 +171,43 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     private void addBreakpoint(Project project) {
         int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-        String file = BreakpointDataHolder.getInstance().getFile();
+        //String file = BreakpointDataHolder.getInstance().getFile();
+        String file = makeFilePath(project);
         DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
                 .addLineBreakpoint(FileDocumentManager.getInstance()
                                 .getDocument(LocalFileSystem.getInstance()
                                         .findFileByIoFile(new File(file))),
                         lineNumber);
+    }
+
+    private String makeFilePath(Project project){
+        String filePath = ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0].toString();
+        String packagePath = BreakpointDataHolder.getInstance().getFile();
+        String os = getOS();
+        if (os.equals("windows")){
+            filePath = filePath.substring(7);
+        }
+        if (os.equals("mac")){
+            filePath = filePath.substring(7);
+        }
+        if (os.equals("linux")){
+            filePath = filePath.substring(7);
+        }
+        String path = filePath + "/" + packagePath;
+        return path;
+    }
+
+    private String getOS(){
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.startsWith("win")){
+            os = "windows";
+        }
+        if (os.startsWith("mac") || os.startsWith("darwin")){
+            os = "mac";
+        }
+        if (os.contains("nux")){
+            os = "linux";
+        }
+        return os;
     }
 }
