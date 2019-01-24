@@ -17,6 +17,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Test Tool Window" secondary="true" anchor="bottom"
                     factoryClass="RuntimeSearchWindow"/>
+        <programRunner implementation="RuntimeSearchProgramRunner" id="RUNTIME_SEARCH_PROGRAM_RUNNER" />
+        <executor implementation="RuntimeSearchExecutor" id="RUNTIME_SEARCH_EXECUTOR" />
     </extensions>
 
     <actions>

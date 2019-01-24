@@ -13,7 +13,8 @@ import java.awt.*;
 public class RuntimeSearchExecutor extends Executor {
 
     @NonNls public static final String EXECUTOR_ID = "RUNTIME_SEARCH_EXECUTOR";
-    private final String myStartActionText = XDebuggerBundle.message("debugger.runner.start.action.text");
+//    private final String myStartActionText = XDebuggerBundle.message("debugger.runner.start.action.text");
+    private final String myStartActionText = "Debug with Runtime Search";
     private final String myDescription = XDebuggerBundle.message("string.debugger.runner.description");
 
     @Override
