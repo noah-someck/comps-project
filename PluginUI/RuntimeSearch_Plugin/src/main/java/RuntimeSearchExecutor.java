@@ -30,7 +30,7 @@ public class RuntimeSearchExecutor extends Executor {
     @NotNull
     @Override
     public Icon getIcon() {
-        return AllIcons.Actions.StartDebugger;
+        return IconLoader.getIcon("images/RSlogo2.png");
     }
 
     @Override
