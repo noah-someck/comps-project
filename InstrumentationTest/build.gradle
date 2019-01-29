@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile 'org.ow2.asm:asm:6.2.1'
+    compile 'org.ow2.asm:asm-util:6.2.1'
+    compile 'org.ow2.asm:asm-commons:6.2.1'
+}
+
+jar {
+    manifest {
+        attributes 'Premain-Class': 'edu.carleton.cs.ASEcomps.Agent', 'Can-Retransform-Classes': true
+
+    }
+}
+
+shadowJar {
+    classifier = 'agent'
+    relocate 'org.objectweb.asm', 'edu.carleton.cs.ASEcomps.internal.org.objectweb.asm'
+}
