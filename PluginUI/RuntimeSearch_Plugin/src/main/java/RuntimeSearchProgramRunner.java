@@ -10,6 +10,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionResult;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.*;
+import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.runners.DefaultProgramRunner;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
@@ -31,6 +32,7 @@ public class RuntimeSearchProgramRunner extends GenericDebuggerRunner {
 
     @Override
     public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
-        return executorId.equals("RUNTIME_SEARCH_EXECUTOR");
+        return executorId.equals("RUNTIME_SEARCH_EXECUTOR") && super.canRun(DefaultDebugExecutor.EXECUTOR_ID, profile);
     }
+
 }
