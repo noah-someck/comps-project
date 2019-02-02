@@ -51,6 +51,12 @@ public class Agent {
                 if (className.contains("com/intellij/rt/debugger/")) {
                     return null;
                 }
+//                try{
+//                    loader.loadClass("java.lang.String");
+//                }catch (ClassNotFoundException e){
+//                    return null;
+//                }
+
                 ClassReader cr = new ClassReader(classfileBuffer);
                 ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
                 try {
