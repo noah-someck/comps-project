@@ -10,6 +10,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.util.Factory;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -42,6 +43,9 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private JLabel timeZone;
     private JPanel myToolWindowContent;
     private ToolWindow myToolWindow;
+    private ComboBox comboBox;
+
+
     private static boolean INITIALIZED = false;
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
@@ -56,9 +60,14 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent = new JPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         myToolWindowContent.setLayout(new GridBagLayout());
-        JLabel label = new JLabel("Search for a string:");
+        String[] choices = { "string","object", "fuzzy","variable"};
+        JLabel label = new JLabel("Search for: ");
         JTextField searchBar = new JTextField(20);
+
+        comboBox = new ComboBox(choices);
+
         myToolWindowContent.add(label);
+        myToolWindowContent.add(comboBox);
         myToolWindowContent.add(searchBar);
 
         JButton myButton = new JButton("Find Next");
@@ -116,6 +125,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     searchBar.setText(s);
                     passInputString(s, project);
                     System.out.println(s);
+                    System.out.println(comboBox.getSelectedItem());
                 }
             }
 
