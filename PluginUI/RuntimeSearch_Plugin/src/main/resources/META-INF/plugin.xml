@@ -16,15 +16,15 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Test Tool Window" secondary="true" anchor="bottom"
-                    factoryClass="RuntimeSearchWindow"/>
-        <programRunner implementation="RuntimeSearchProgramRunner" id="RUNTIME_SEARCH_PROGRAM_RUNNER" />
-        <executor implementation="RuntimeSearchExecutor" id="RUNTIME_SEARCH_EXECUTOR" />
-        <java.programPatcher implementation="RunWithAgentPatcher"/>
+                    factoryClass="edu.carleton.cs.ASEcomps.RuntimeSearchWindow"/>
+        <programRunner implementation="edu.carleton.cs.ASEcomps.RuntimeSearchProgramRunner" />
+        <executor implementation="edu.carleton.cs.ASEcomps.RuntimeSearchExecutor" />
+        <java.programPatcher implementation="edu.carleton.cs.ASEcomps.RunWithAgentPatcher"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="RuntimeSearchDropdown" class="RuntimeSearchDropdown" text="Debug with RuntimeSearch..."
+        <action id="edu.carleton.cs.ASEcomps.RuntimeSearchDropdown" class="edu.carleton.cs.ASEcomps.RuntimeSearchDropdown" text="Debug with RuntimeSearch..."
                 description="Open RuntimeSearch Window to start debugging" icon="images/RSlogo2.png">
             <add-to-group group-id="RunMenu" anchor="before" relative-to-action="Android.ChooseProfileConfiguration"/>
         </action>

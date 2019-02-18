@@ -9,6 +9,9 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.security.ProtectionDomain;
 import java.util.function.Predicate;
 
@@ -51,6 +54,9 @@ public class Agent {
                 if (className.contains("com/intellij/rt/debugger/")) {
                     return null;
                 }
+                if (className.contains("edu/carleton/cs/ASEcomps/RmiServer")) {
+                    return null;
+                }
 //                try{
 //                    loader.loadClass("java.lang.String");
 //                }catch (ClassNotFoundException e){
@@ -80,6 +86,13 @@ public class Agent {
 
 //        inst.addTransformer(ClassFileTransformers.skipBootstrapped(externalProfilingTransformer));
 //        inst.addTransformer(ClassFileTransformers.filterByClassName(ClassFileTransformers.ClassPrinter, startsWithEdu));
+        try {
+            RmiServer.startServer();
+            StringSearchHolder.getInstance().setStringSearch(RmiServer.getSearchString());
+//            new Shutdown().start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

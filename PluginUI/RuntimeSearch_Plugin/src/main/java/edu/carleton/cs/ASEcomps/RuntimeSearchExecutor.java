@@ -1,4 +1,7 @@
+package edu.carleton.cs.ASEcomps;
+
 import com.intellij.execution.Executor;
+import com.intellij.execution.ExecutorRegistry;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.wm.ToolWindowId;
@@ -8,7 +11,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class RuntimeSearchExecutor extends Executor {
 
@@ -19,6 +21,11 @@ public class RuntimeSearchExecutor extends Executor {
 
     @Override
     public String getToolWindowId() {
+//        Executor[] list = ExecutorRegistry.getInstance().getRegisteredExecutors();
+//        for (int i = 0; i < list.length; i++) {
+//            System.out.println(list[i].getId());
+//        }
+//        return "Test Tool Window";
         return ToolWindowId.DEBUG;
     }
 
