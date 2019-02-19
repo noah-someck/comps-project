@@ -3,3 +3,4 @@
 **/.gradle
 PluginUI/RuntimeSearch_Plugin/.idea/compiler.xml
 PluginUI/RuntimeSearch_Plugin/.idea/misc.xml
+InstrumentationTest/build/
