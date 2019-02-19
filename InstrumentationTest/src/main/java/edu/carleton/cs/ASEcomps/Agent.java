@@ -54,7 +54,7 @@ public class Agent {
                 if (className.contains("com/intellij/rt/debugger/")) {
                     return null;
                 }
-                if (className.contains("edu/carleton/cs/ASEcomps/RmiServer")) {
+                if ((className.contains("edu/carleton/cs/ASEcomps/RmiServer")) && (!className.contains("edu/carleton/cs/ASEcomps/RmiServerIntf"))) {
                     return null;
                 }
 //                try{
