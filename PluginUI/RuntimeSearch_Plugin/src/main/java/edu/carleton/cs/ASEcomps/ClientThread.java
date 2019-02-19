@@ -14,9 +14,10 @@ public class ClientThread extends Thread {
         rmiClient = new RmiClient();
         try {
             rmiClient.begin();
-        } catch (RemoteException | MalformedURLException e) {
+        } catch (RemoteException | MalformedURLException | NotBoundException e) {
             e.printStackTrace();
         }
+        System.out.println("GOT IT");
         RuntimeSearchWindow.endClient();
     }
 

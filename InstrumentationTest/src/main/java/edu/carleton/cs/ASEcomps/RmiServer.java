@@ -18,6 +18,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
     private static RmiServer obj;
     volatile private String searchString;
     volatile private static boolean completionAcknowledged = false;
+    private static boolean wasShutdown = false;
 
     private RmiServer() throws RemoteException {
         super(0);    // required to avoid the 'rmic' step, see below
@@ -87,11 +88,14 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
     }
 
     public static void shutdown() throws RemoteException, NotBoundException, MalformedURLException {
-        doneSearching = true;
-        Naming.rebind("//localhost/RmiServer", obj);
-        while (!completionAcknowledged);
-        Naming.unbind("//localhost/RmiServer");
-        UnicastRemoteObject.unexportObject(obj, true);
+        if (!wasShutdown) {
+            doneSearching = true;
+            Naming.rebind("//localhost/RmiServer", obj);
+            while (!completionAcknowledged);
+            Naming.unbind("//localhost/RmiServer");
+            UnicastRemoteObject.unexportObject(obj, true);
+            wasShutdown = true;
+        }
     }
 
 }

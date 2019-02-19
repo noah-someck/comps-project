@@ -89,6 +89,15 @@ public class Agent {
         try {
             RmiServer.startServer();
             StringSearchHolder.getInstance().setStringSearch(RmiServer.getSearchString());
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    try {
+                        RmiServer.shutdown();
+                    } catch (RemoteException | NotBoundException | MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             new Shutdown().start();
         } catch (Exception e) {
             e.printStackTrace();

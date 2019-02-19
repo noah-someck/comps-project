@@ -20,22 +20,14 @@ public class RmiClient {
         done = true;
     }
 
-    public void begin() throws RemoteException, MalformedURLException {
+    public void begin() throws RemoteException, MalformedURLException, NotBoundException {
         boolean waitToFinish = false;
         String[] breakpoint = null;
         RmiServerIntf obj = null;
-        try {
-            obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
-        } catch (NotBoundException ignore) {
-        }
+        obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
 
         while (!obj.searchCompleted()) {
-            try {
-                obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
-            } catch (NotBoundException e) {
-                System.out.println(2);
-                break;
-            }
+            obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
             if (done) {
                 obj.finished();
                 removeBreakpoint(breakpoint);
