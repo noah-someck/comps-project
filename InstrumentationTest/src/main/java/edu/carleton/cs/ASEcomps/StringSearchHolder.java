@@ -9,9 +9,11 @@ public class StringSearchHolder {
     private String stringSearch;
     volatile private boolean pause;
     volatile private int numCalls;
+    volatile private boolean matchFound;
 
     private StringSearchHolder() {
         pause = true;
+        matchFound = false;
         numCalls = 0;
     }
 
@@ -37,6 +39,7 @@ public class StringSearchHolder {
         }
         // lowercase???
         if (comparedString.contains(getInstance().getStringSearch())) {
+            getInstance().matchFound = true;
             System.out.println("Match!");
             System.out.println(className);
             System.out.println(file);
@@ -45,6 +48,7 @@ public class StringSearchHolder {
             while (getInstance().pause);
             System.out.println("HELLO");
             StringSearchHolder.getInstance().pause = true;
+            getInstance().matchFound = false;
         }
         // why do we do this below???
         return getInstance().getStringSearch().contains(comparedString);
@@ -62,7 +66,7 @@ public class StringSearchHolder {
         return numCalls;
     }
 
-    public boolean paused() {
-        return pause;
+    public boolean isMatchFound() {
+        return matchFound;
     }
 }

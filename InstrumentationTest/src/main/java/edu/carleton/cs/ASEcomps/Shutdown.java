@@ -10,9 +10,9 @@ public class Shutdown extends Thread {
     @Override
     public void run() {
         long startTime = System.currentTimeMillis();
-        long elapsedTime = 0;
+        long elapsedTime;
         int prevNumCalls = 0;
-        int curNumCalls = 0;
+        int curNumCalls;
 
         boolean done = false;
         while (!done) {
@@ -21,7 +21,7 @@ public class Shutdown extends Thread {
             elapsedTime = currentTime - startTime;
             if (elapsedTime >= 1000) {
                 startTime = currentTime;
-                if (!StringSearchHolder.getInstance().paused() && (prevNumCalls == curNumCalls)) {
+                if (!StringSearchHolder.getInstance().isMatchFound() && (prevNumCalls == curNumCalls)) {
                     System.out.println("FINISHED");
                     try {
                         RmiServer.shutdown();
