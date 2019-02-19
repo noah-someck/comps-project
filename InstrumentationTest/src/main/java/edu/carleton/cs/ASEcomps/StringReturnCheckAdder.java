@@ -84,7 +84,7 @@ public class StringReturnCheckAdder extends ClassVisitor {
                 super.visitInsn(opcode);
                 if (opcode == Opcodes.AALOAD) { // Covers Strings loaded from array
                     super.visitInsn(Opcodes.DUP); // put the string on stack
-                    super.visitTypeInsn(Opcodes.INSTANCEOF, "Ljava/lang/String;");
+                    super.visitTypeInsn(Opcodes.INSTANCEOF, "java/lang/String");
                     Label compareLabel = new Label();
                     super.visitJumpInsn(Opcodes.IFEQ, compareLabel);
 

@@ -91,7 +91,6 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     }
                     RuntimeSearchExecutor runtimeSearchExecutor = new RuntimeSearchExecutor();
                     if (runConfig != null) {
-                        System.out.println("worked");
                         try {
 //                            ExecutionEnvironmentBuilder.create(project, DefaultDebugExecutor.getDebugExecutorInstance(), runConfig).buildAndExecute();
                             ExecutionEnvironmentBuilder.create(project, runtimeSearchExecutor, runConfig).buildAndExecute();
@@ -154,7 +153,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         }
         //System.out.println(ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0]);
         removeBreakpoint(project);
-        //TODO: call their singleton to update BreakpointDataHolder??
+        //TODO: call their singleton to update BreakpointDataHolder with package path??
         addBreakpoint(project);
     }
 

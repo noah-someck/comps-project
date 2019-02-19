@@ -18,14 +18,15 @@ import java.io.IOException;
 import java.util.jar.JarFile;
 
 public class RunWithAgentPatcher extends JavaProgramPatcher {
-    private static final String PATH_TO_AGENT_JAR = "C:\\Users\\Joshua\\Desktop\\CS\\comps\\comps-project\\PluginUI\\RuntimeSearch_Plugin\\src\\main\\resources\\agents\\InstrumentationTest-agent.jar";
+    private static final String PATH_TO_AGENT_JAR = "C:\\Users\\T\\aseComps1\\PluginUI\\RuntimeSearch_Plugin\\src\\main\\resources\\agents\\InstrumentationTest-agent.jar";
+//"C:\\Users\\T\\aseComps1\\PluginUI\\RuntimeSearch_Plugin\\src\\main\\resources\\agents\\InstrumentationTest-agent.jar";
 
     @Override
     public void patchJavaParameters(Executor executor, RunProfile configuration, JavaParameters javaParameters) {
         if (!executor.getId().equals("RUNTIME_SEARCH_EXECUTOR")) return;
 
         ParametersList vmParametersList = javaParameters.getVMParametersList();
-        vmParametersList.addAt(0, "-javaagent:" + PATH_TO_AGENT_JAR);
+        vmParametersList.add( "-javaagent:" + PATH_TO_AGENT_JAR);
 
 
     }
