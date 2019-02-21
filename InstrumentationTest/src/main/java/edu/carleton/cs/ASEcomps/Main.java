@@ -60,7 +60,7 @@ public class Main {
 //        String y = stringArray[0];
         Object str = "Helloworld";
         String string = (String) str;
-        str = "yes";
+        str = "test";
 
         RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
         List<String> jvmArgs = bean.getInputArguments();

@@ -1,3 +1,5 @@
+package edu.carleton.cs.ASEcomps;
+
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.JavaParameters;
 import com.intellij.execution.configurations.ParametersList;
@@ -18,7 +20,7 @@ import java.io.IOException;
 import java.util.jar.JarFile;
 
 public class RunWithAgentPatcher extends JavaProgramPatcher {
-    private static final String PATH_TO_AGENT_JAR = "C:\\Users\\T\\aseComps1\\PluginUI\\RuntimeSearch_Plugin\\src\\main\\resources\\agents\\InstrumentationTest-agent.jar";
+    private static final String PATH_TO_AGENT_JAR = "/Users/Noah/Documents/Noah/College/Senior Year/Comps/comps-project/PluginUI/RuntimeSearch_Plugin/src/main/resources/agents/InstrumentationTest-agent.jar";
 //"C:\\Users\\T\\aseComps1\\PluginUI\\RuntimeSearch_Plugin\\src\\main\\resources\\agents\\InstrumentationTest-agent.jar";
 
     @Override

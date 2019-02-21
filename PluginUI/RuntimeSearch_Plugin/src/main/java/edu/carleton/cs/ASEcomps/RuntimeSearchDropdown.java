@@ -1,3 +1,5 @@
+package edu.carleton.cs.ASEcomps;
+
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ActionCallback;

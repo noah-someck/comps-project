@@ -5,6 +5,14 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
+
 public class MethodProfileAdderExternal extends MethodVisitor implements LVSUser {
     private String name;
     private boolean isMain;
@@ -77,5 +85,99 @@ public class MethodProfileAdderExternal extends MethodVisitor implements LVSUser
         addedStack = 0;
         addedLocals = 0;
         encounteredExit = false;
+    }
+
+    public static class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
+
+        private static String MESSAGE = "Hello World";
+        private static boolean isNew = false;
+        private static boolean cont = false;
+        private static RmiServer obj;
+
+        public RmiServer() throws RemoteException {
+            super(0);    // required to avoid the 'rmic' step, see below
+        }
+
+        public String getMessage() {
+            return MESSAGE;
+        }
+
+        public void setMessage(String message) {
+            System.out.println(message);
+        }
+
+        public boolean isNew() {
+            return isNew;
+        }
+
+        public void wasReceived() {
+            isNew = false;
+            cont = true;
+            try {
+                Naming.rebind("//localhost/edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer", obj);
+            } catch (RemoteException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public boolean cont() {
+            return cont;
+        }
+
+        public void finished() {
+            cont = false;
+            try {
+                Naming.rebind("//localhost/edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer", obj);
+            } catch (RemoteException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+            System.out.print("Enter message: ");
+            Scanner sc = new Scanner(System.in);
+            MESSAGE = sc.nextLine();
+            isNew = true;
+            try {
+                Naming.rebind("//localhost/edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer", obj);
+            } catch (RemoteException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public static void main(String args[]) throws Exception {
+            System.out.println("RMI server started");
+
+            try { //special exception handler for registry creation
+                LocateRegistry.createRegistry(1099);
+                System.out.println("java RMI registry created.");
+            } catch (RemoteException e) {
+                //do nothing, error means registry already exists
+                System.out.println("java RMI registry already exists.");
+            }
+
+            //Instantiate edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer
+
+            obj = new RmiServer();
+
+            // Bind this object instance to the name "edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer"
+            Naming.rebind("//localhost/edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer", obj);
+            System.out.println("PeerServer bound in registry");
+
+            System.out.print("Enter message: ");
+            Scanner sc = new Scanner(System.in);
+            MESSAGE = sc.nextLine();
+            isNew = true;
+            Naming.rebind("//localhost/edu.carleton.cs.ASEcomps.MethodProfileAdderExternal.RmiServer", obj);
+        }
+
+    }
+
+    public static interface RmiServerIntf extends Remote {
+
+        public String getMessage() throws RemoteException;
+        public void setMessage(String message) throws RemoteException;
+        public boolean isNew() throws RemoteException;
+        public void wasReceived() throws RemoteException;
+        public boolean cont() throws RemoteException;
+        public void finished() throws RemoteException;
+
     }
 }

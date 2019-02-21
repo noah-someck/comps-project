@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Instrumented Main" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="edu.carleton.cs.ASEcomps.Main" />
-    <module name="InstrumentationTest" />
+    <module name="InstrumentationTest_main" />
     <option name="VM_PARAMETERS" value="-javaagent:&quot;build/libs/InstrumentationTest-agent.jar&quot;" />
     <method v="2">
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="shadowJar" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />

@@ -1,27 +1,18 @@
+package edu.carleton.cs.ASEcomps;
+
 import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.ui.breakpoints.Breakpoint;
-import com.intellij.execution.*;
-import com.intellij.execution.configurations.*;
-import com.intellij.execution.executors.DefaultDebugExecutor;
-import com.intellij.execution.runners.*;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.util.Factory;
 import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +21,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.*;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 
@@ -47,8 +40,16 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
 
     private static boolean INITIALIZED = false;
+    private static boolean firstClick = true;
+    private static ClientThread currentClient;
+
+    // TODO only allow RuntimeSearch to run once at a time
+    // TODO tool window not opening every time
+    // TODO extra click in order to finish program
 
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
+        ProjectHolder.createProjectHolder(project);
+
         myToolWindow = toolWindow;
         Runnable runnable = new Runnable() {
             @Override
@@ -74,57 +75,19 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                //System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 String s = searchBar.getText().trim();
-                //System.out.println(DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints().size());
                 if (!s.equals("")) {
-
-                    final RunManager runManager = RunManager.getInstance(project);
-                    List<RunConfiguration> runConfigurations = runManager.getAllConfigurationsList();
-
-                    RunConfiguration runConfig = null;
-                    for (RunConfiguration runConfiguration : runConfigurations) {
-                        if (runConfiguration.getName().equals("Main")) {
-                            runConfig = runConfiguration;
-                        }
-                        //System.out.println(runConfiguration.getName());
-                    }
-                    RuntimeSearchExecutor runtimeSearchExecutor = new RuntimeSearchExecutor();
-                    if (runConfig != null) {
-                        try {
-//                            ExecutionEnvironmentBuilder.create(project, DefaultDebugExecutor.getDebugExecutorInstance(), runConfig).buildAndExecute();
-                            ExecutionEnvironmentBuilder.create(project, runtimeSearchExecutor, runConfig).buildAndExecute();
-//                            ExecutionEnvironmentBuilder.create(project, runtimeSearchExecutor, runConfig).build();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    RunConfiguration finalRunConfig = runConfig;
-                    RunProfile runProfile = new RunProfile() {
-                        @Nullable
-                        @Override
-                        public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
-                            CommandLineState commandLineState = (CommandLineState) finalRunConfig.getState(executor, environment);
-                            return commandLineState;
-                        }
-
-                        @Override
-                        public String getName() {
-                            return finalRunConfig.getName();
-                        }
-
-                        @Nullable
-                        @Override
-                        public Icon getIcon() {
-                            return finalRunConfig.getIcon();
-                        }
-                    };
-
                     searchBar.setText(s);
                     passInputString(s, project);
-                    System.out.println(s);
-                    System.out.println(comboBox.getSelectedItem());
+
+                    if (firstClick) {
+                        setSearchString(s);
+                        currentClient = new ClientThread();
+                        currentClient.start();
+                    }
+                    else if (currentClient != null) {
+                        currentClient.reset();
+                    }
                 }
             }
 
@@ -146,21 +109,39 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     }
 
+    public static void endClient() {
+        currentClient = null;
+    }
+
+    private void setSearchString(String s) {
+        boolean searchStringSent = false;
+        while (!searchStringSent) {
+            try {
+                RmiClient.setSearchString(s);
+                searchStringSent = true;
+            } catch (RemoteException | NotBoundException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        firstClick = false;
+    }
+
     private void passInputString(String searchQuery, Project project) {
         if (INITIALIZED == false){
             //initialize backup startup thingy
             INITIALIZED = true;
         }
         //System.out.println(ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0]);
-        removeBreakpoint(project);
-        //TODO: call their singleton to update BreakpointDataHolder with package path??
-        addBreakpoint(project);
+//        removeBreakpoint(project);
+        //TODO: call their singleton to update edu.carleton.cs.ASEcomps.BreakpointDataHolder with package path??
+//        addBreakpoint(project);
     }
 
-    private void removeBreakpoint(Project project) {
-        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-        //String file = BreakpointDataHolder.getInstance().getFile();
-        String file = makeFilePath(project);
+    public static void removeBreakpoint(String packagePath, int lineNumber) {
+        Project project = ProjectHolder.getInstance().getProject();
+//        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
+        //String file = edu.carleton.cs.ASEcomps.BreakpointDataHolder.getInstance().getFile();
+        String file = makeFilePath(project, packagePath);
         List<Breakpoint> breakpoints = DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints();
         for (int i = 0; i < breakpoints.size(); i++) {
             XBreakpoint breakpoint = breakpoints.get(i).getXBreakpoint();
@@ -178,10 +159,11 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         }
     }
 
-    private void addBreakpoint(Project project) {
-        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-        //String file = BreakpointDataHolder.getInstance().getFile();
-        String file = makeFilePath(project);
+    public static void addBreakpoint(String packagePath, int lineNumber) {
+        Project project = ProjectHolder.getInstance().getProject();
+//        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
+        //String file = edu.carleton.cs.ASEcomps.BreakpointDataHolder.getInstance().getFile();
+        String file = makeFilePath(project, packagePath);
         DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
                 .addLineBreakpoint(FileDocumentManager.getInstance()
                                 .getDocument(LocalFileSystem.getInstance()
@@ -189,34 +171,15 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                         lineNumber);
     }
 
-    private String makeFilePath(Project project){
+    private static String makeFilePath(Project project, String packagePath){
         String filePath = ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0].toString();
-        String packagePath = BreakpointDataHolder.getInstance().getFile();
-        String os = getOS();
-        if (os.equals("windows")){
-            filePath = filePath.substring(7);
-        }
-        if (os.equals("mac")){
-            filePath = filePath.substring(7);
-        }
-        if (os.equals("linux")){
-            filePath = filePath.substring(7);
-        }
-        String path = filePath + "/" + packagePath;
+        filePath = filePath.substring(7);
+        // TODO src and what is going on here???
+        String path = filePath + "/src/" + packagePath;
         return path;
     }
 
-    private String getOS(){
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.startsWith("win")){
-            os = "windows";
-        }
-        if (os.startsWith("mac") || os.startsWith("darwin")){
-            os = "mac";
-        }
-        if (os.contains("nux")){
-            os = "linux";
-        }
-        return os;
+    public static void setFirstClick() {
+        firstClick = true;
     }
 }
