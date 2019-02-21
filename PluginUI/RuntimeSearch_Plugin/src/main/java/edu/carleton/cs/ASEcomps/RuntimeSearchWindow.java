@@ -164,25 +164,10 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     private static String makeFilePath(Project project, String packagePath){
         String filePath = ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0].toString();
-        String os = getOS();
         filePath = filePath.substring(7);
         // TODO src and what is going on here???
         String path = filePath + "/src/" + packagePath;
         return path;
-    }
-
-    private static String getOS(){
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.startsWith("win")){
-            os = "windows";
-        }
-        if (os.startsWith("mac") || os.startsWith("darwin")){
-            os = "mac";
-        }
-        if (os.contains("nux")){
-            os = "linux";
-        }
-        return os;
     }
 
     public static void setFirstClick() {
