@@ -165,15 +165,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private static String makeFilePath(Project project, String packagePath){
         String filePath = ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0].toString();
         String os = getOS();
-        if (os.equals("windows")){
-            filePath = filePath.substring(7);
-        }
-        if (os.equals("mac")){
-            filePath = filePath.substring(7);
-        }
-        if (os.equals("linux")){
-            filePath = filePath.substring(7);
-        }
+        filePath = filePath.substring(7);
         // TODO src and what is going on here???
         String path = filePath + "/src/" + packagePath;
         return path;
