@@ -17,6 +17,7 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
     private static boolean doneSearching = false;
     private static RmiServer obj;
     volatile private String searchString;
+    volatile private SEARCH_TYPE searchType;
     volatile private static boolean completionAcknowledged = false;
     private static boolean wasShutdown = false;
 
@@ -77,8 +78,9 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
         Naming.rebind("//localhost/RmiServer", obj);
     }
 
-    public void setSearchString(String searchString) {
+    public void setSearchString(String searchString, SEARCH_TYPE searchType) {
         this.searchString = searchString;
+        this.searchType = searchType;
     }
 
     public static String getSearchString()

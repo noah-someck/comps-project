@@ -81,7 +81,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     passInputString(s, project);
 
                     if (firstClick) {
-                        setSearchString(s);
+                        setSearchString(s, getSearchType(comboBox.getSelectedItem().toString()));
                         currentClient = new ClientThread();
                         currentClient.start();
                     }
@@ -109,15 +109,29 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     }
 
+    private RmiServerIntf.SEARCH_TYPE getSearchType(String searchType) {
+        switch (searchType) {
+            case "string":
+                return RmiServerIntf.SEARCH_TYPE.STRING;
+            case "fuzzy":
+                return RmiServerIntf.SEARCH_TYPE.FUZZY;
+            case "object":
+                return RmiServerIntf.SEARCH_TYPE.OBJECT;
+            case "variable":
+                return RmiServerIntf.SEARCH_TYPE.VARIABLE;
+        }
+        return RmiServerIntf.SEARCH_TYPE.STRING;
+    }
+
     public static void endClient() {
         currentClient = null;
     }
 
-    private void setSearchString(String s) {
+    private void setSearchString(String searchString, RmiServerIntf.SEARCH_TYPE searchType) {
         boolean searchStringSent = false;
         while (!searchStringSent) {
             try {
-                RmiClient.setSearchString(s);
+                RmiClient.setSearchString(searchString, searchType);
                 searchStringSent = true;
             } catch (RemoteException | NotBoundException | MalformedURLException e) {
                 e.printStackTrace();

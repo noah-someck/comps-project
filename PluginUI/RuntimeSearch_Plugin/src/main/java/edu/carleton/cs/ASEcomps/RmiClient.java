@@ -23,8 +23,7 @@ public class RmiClient {
     public void begin() throws RemoteException, MalformedURLException, NotBoundException {
         boolean waitToFinish = false;
         String[] breakpoint = null;
-        RmiServerIntf obj = null;
-        obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
+        RmiServerIntf obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
 
         while (!obj.searchCompleted()) {
             obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
@@ -64,8 +63,8 @@ public class RmiClient {
         });
     }
 
-    public static void setSearchString(String searchString) throws RemoteException, NotBoundException, MalformedURLException {
+    public static void setSearchString(String searchString, RmiServerIntf.SEARCH_TYPE searchType) throws RemoteException, NotBoundException, MalformedURLException {
         RmiServerIntf obj = (RmiServerIntf)Naming.lookup("//localhost/RmiServer");
-        obj.setSearchString(searchString);
+        obj.setSearchString(searchString, searchType);
     }
 }
