@@ -7,6 +7,7 @@ public class StringSearchHolder {
 
     private static StringSearchHolder stringSearchHolder;
     private String stringSearch;
+    private RmiServerIntf.SEARCH_TYPE searchType;
     volatile private boolean pause;
     volatile private int numCalls;
     volatile private boolean matchFound;
@@ -26,6 +27,10 @@ public class StringSearchHolder {
 
     public void setStringSearch(String stringSearch) {
         this.stringSearch = stringSearch;
+    }
+
+    public void setSearchType(RmiServerIntf.SEARCH_TYPE searchType) {
+        this.searchType = searchType;
     }
 
     public String getStringSearch() {

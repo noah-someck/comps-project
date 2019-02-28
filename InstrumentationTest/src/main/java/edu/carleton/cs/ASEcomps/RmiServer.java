@@ -83,10 +83,14 @@ public class RmiServer extends UnicastRemoteObject implements RmiServerIntf {
         this.searchType = searchType;
     }
 
-    public static String getSearchString()
-    {
+    public static String getSearchString() {
         while (obj.searchString == null);
         return obj.searchString;
+    }
+
+    public static SEARCH_TYPE getSearchType() {
+        while (obj.searchType == null);
+        return obj.searchType;
     }
 
     public static void shutdown() throws RemoteException, NotBoundException, MalformedURLException {

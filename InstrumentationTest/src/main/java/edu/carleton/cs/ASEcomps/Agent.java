@@ -89,6 +89,7 @@ public class Agent {
         try {
             RmiServer.startServer();
             StringSearchHolder.getInstance().setStringSearch(RmiServer.getSearchString());
+            StringSearchHolder.getInstance().setSearchType(RmiServer.getSearchType());
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
                     try {
