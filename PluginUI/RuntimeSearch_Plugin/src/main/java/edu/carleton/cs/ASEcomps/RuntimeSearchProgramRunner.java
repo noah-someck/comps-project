@@ -35,19 +35,4 @@ public class RuntimeSearchProgramRunner extends GenericDebuggerRunner {
         };
         window.show(runnable);
     }
-
-//    @Override
-//    protected void execute(ExecutionEnvironment environment, Callback callback, RunProfileState state) throws ExecutionException {
-//        super.execute(environment, callback, state);
-//        edu.carleton.cs.ASEcomps.RuntimeSearchWindow.setFirstClick();
-//        ToolWindowManager manager = ToolWindowManager.getInstance(environment.getProject());
-//        ToolWindow window = manager.getToolWindow("Test Tool Window");
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        };
-//        window.show(runnable);
-//    }
 }

@@ -15,7 +15,6 @@ import com.intellij.ui.content.ContentFactory;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 
 import javax.swing.*;
-import javax.xml.bind.SchemaOutputResolver;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,17 +29,11 @@ import java.util.List;
 
 public class RuntimeSearchWindow implements ToolWindowFactory {
 
-    private JButton refreshToolWindowButton;
-    private JButton hideToolWindowButton;
-    private JLabel currentDate;
-    private JLabel currentTime;
-    private JLabel timeZone;
     private JPanel myToolWindowContent;
     private ToolWindow myToolWindow;
     private ComboBox comboBox;
 
 
-    private static boolean INITIALIZED = false;
     private static boolean firstClick = true;
     private static ClientThread currentClient;
 
@@ -79,8 +72,6 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                 String s = searchBar.getText().trim();
                 if (!s.equals("")) {
                     searchBar.setText(s);
-                    passInputString(s, project);
-
                     System.out.println(comboBox.getSelectedItem().toString());
 
                     if (firstClick) {
@@ -145,21 +136,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         firstClick = false;
     }
 
-    private void passInputString(String searchQuery, Project project) {
-        if (INITIALIZED == false){
-            //initialize backup startup thingy
-            INITIALIZED = true;
-        }
-        //System.out.println(ModuleRootManager.getInstance(ModuleManager.getInstance(project).getModules()[0]).getContentRoots()[0]);
-//        removeBreakpoint(project);
-        //TODO: call their singleton to update edu.carleton.cs.ASEcomps.BreakpointDataHolder with package path??
-//        addBreakpoint(project);
-    }
-
     public static void removeBreakpoint(String packagePath, int lineNumber) {
         Project project = ProjectHolder.getInstance().getProject();
-//        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-        //String file = edu.carleton.cs.ASEcomps.BreakpointDataHolder.getInstance().getFile();
         String file = makeFilePath(project, packagePath);
         List<Breakpoint> breakpoints = DebuggerManagerEx.getInstanceEx(project).getBreakpointManager().getBreakpoints();
         for (int i = 0; i < breakpoints.size(); i++) {
@@ -180,8 +158,6 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     public static void addBreakpoint(String packagePath, int lineNumber) {
         Project project = ProjectHolder.getInstance().getProject();
-//        int lineNumber = BreakpointDataHolder.getInstance().getLineNumber();
-        //String file = edu.carleton.cs.ASEcomps.BreakpointDataHolder.getInstance().getFile();
         String file = makeFilePath(project, packagePath);
         DebuggerManagerEx.getInstanceEx(project).getBreakpointManager()
                 .addLineBreakpoint(FileDocumentManager.getInstance()

@@ -2,7 +2,6 @@ package edu.carleton.cs.ASEcomps;
 
 import com.intellij.openapi.application.ApplicationManager;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;

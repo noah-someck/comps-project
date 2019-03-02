@@ -1,6 +1,5 @@
 package edu.carleton.cs.ASEcomps;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -17,7 +16,6 @@ public class ClientThread extends Thread {
         } catch (RemoteException | MalformedURLException | NotBoundException e) {
             e.printStackTrace();
         }
-        System.out.println("GOT IT");
         RuntimeSearchWindow.endClient();
     }
 
