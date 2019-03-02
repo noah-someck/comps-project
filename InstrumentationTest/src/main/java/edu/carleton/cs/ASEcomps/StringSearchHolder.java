@@ -42,8 +42,30 @@ public class StringSearchHolder {
         if (getInstance().getStringSearch() == null) {
             return false;
         }
+
+        boolean match = false;
+
+        System.out.println(getInstance().searchType);
+        switch (getInstance().searchType) {
+            case STRING:
+                if (comparedString.contains(getInstance().getStringSearch())) {
+                    match = true;
+                }
+                break;
+            case FUZZY:
+                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch());
+                break;
+            case OBJECT:
+                break;
+            case VARIABLE:
+                break;
+            case REGEX:
+                match = regexTypeSearch(comparedString, getInstance().getStringSearch());
+                break;
+        }
+
         // lowercase???
-        if (comparedString.contains(getInstance().getStringSearch())) {
+        if (match) {
             getInstance().matchFound = true;
             System.out.println("Match!");
             System.out.println(className);
@@ -57,6 +79,15 @@ public class StringSearchHolder {
         }
         // why do we do this below???
         return getInstance().getStringSearch().contains(comparedString);
+    }
+
+    private static boolean regexTypeSearch(String comparedString, String pluginString) {
+        return comparedString.matches(pluginString);
+    }
+
+    private static boolean fuzzyTypeSearch(String comparedString, String pluginString) {
+
+        return true;
     }
 
     public void continueSearch() {

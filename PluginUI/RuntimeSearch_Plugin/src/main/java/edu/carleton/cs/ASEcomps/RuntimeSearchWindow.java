@@ -15,6 +15,7 @@ import com.intellij.ui.content.ContentFactory;
 import com.intellij.xdebugger.breakpoints.XBreakpoint;
 
 import javax.swing.*;
+import javax.xml.bind.SchemaOutputResolver;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,7 +62,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent = new JPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         myToolWindowContent.setLayout(new GridBagLayout());
-        String[] choices = { "string","object", "fuzzy","variable"};
+        String[] choices = { "string","object", "fuzzy","variable","regex"};
         JLabel label = new JLabel("Search for: ");
         JTextField searchBar = new JTextField(20);
 
@@ -79,6 +80,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                 if (!s.equals("")) {
                     searchBar.setText(s);
                     passInputString(s, project);
+
+                    System.out.println(comboBox.getSelectedItem().toString());
 
                     if (firstClick) {
                         setSearchString(s, getSearchType(comboBox.getSelectedItem().toString()));
@@ -119,6 +122,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                 return RmiServerIntf.SEARCH_TYPE.OBJECT;
             case "variable":
                 return RmiServerIntf.SEARCH_TYPE.VARIABLE;
+            case "regex":
+                return RmiServerIntf.SEARCH_TYPE.REGEX;
         }
         return RmiServerIntf.SEARCH_TYPE.STRING;
     }
