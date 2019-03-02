@@ -34,9 +34,9 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private static ComboBox comboBox;
     private static JTextField searchBar;
 
-
     private static boolean firstClick = true;
     private static ClientThread currentClient;
+
 
     // TODO only allow RuntimeSearch to run once at a time
     // TODO tool window not opening every time
@@ -66,6 +66,9 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent.add(comboBox);
         myToolWindowContent.add(searchBar);
 
+        searchBar.setEnabled(false);
+        comboBox.setEnabled(false);
+
         JButton myButton = new JButton("Find Next");
         myButton.addActionListener(new ActionListener() {
             @Override
@@ -79,8 +82,6 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                         searchBar.setEnabled(false);
                         comboBox.setEnabled(false);
                         setSearchString(s, getSearchType(comboBox.getSelectedItem().toString()));
-                        currentClient = new ClientThread();
-                        currentClient.start();
                     }
                     else if (currentClient != null) {
                         currentClient.reset();
@@ -122,8 +123,16 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         return RmiServerIntf.SEARCH_TYPE.STRING;
     }
 
+    public static void showInput() {
+        searchBar.setEnabled(true);
+        comboBox.setEnabled(true);
+    }
+
     public static void endClient() {
         currentClient = null;
+        searchBar.setEnabled(false);
+        comboBox.setEnabled(false);
+        RuntimeSearchProgramRunner.setClientNotRunning();
     }
 
     private void setSearchString(String searchString, RmiServerIntf.SEARCH_TYPE searchType) {
@@ -179,7 +188,10 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     public static void setFirstClick() {
         firstClick = true;
-        searchBar.setEnabled(true);
-        comboBox.setEnabled(true);
+    }
+
+    public static void createClient() {
+        currentClient = new ClientThread();
+        currentClient.start();
     }
 }

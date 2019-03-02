@@ -5,11 +5,16 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.*;
 import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class RuntimeSearchProgramRunner extends GenericDebuggerRunner {
+
+    private static boolean clientRunning = false;
+
     @NotNull
     @Override
     public String getRunnerId() {
@@ -18,12 +23,19 @@ public class RuntimeSearchProgramRunner extends GenericDebuggerRunner {
 
     @Override
     public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
-        return executorId.equals("RUNTIME_SEARCH_EXECUTOR") && super.canRun(DefaultDebugExecutor.EXECUTOR_ID, profile);
+        return executorId.equals("RUNTIME_SEARCH_EXECUTOR") && super.canRun(DefaultDebugExecutor.EXECUTOR_ID, profile) && !clientRunning;
     }
 
     @Override
-    public void execute(@NotNull ExecutionEnvironment environment) throws ExecutionException {
-        super.execute(environment);
+    public void execute(@NotNull ExecutionEnvironment environment, @Nullable Callback callback) throws ExecutionException {
+        callback = new Callback() {
+            @Override
+            public void processStarted(RunContentDescriptor descriptor) {
+                clientRunning = true;
+                RuntimeSearchWindow.createClient();
+            }
+        };
+        super.execute(environment, callback);
         RuntimeSearchWindow.setFirstClick();
         ToolWindowManager manager = ToolWindowManager.getInstance(environment.getProject());
         ToolWindow window = manager.getToolWindow("Test Tool Window");
@@ -34,5 +46,9 @@ public class RuntimeSearchProgramRunner extends GenericDebuggerRunner {
             }
         };
         window.show(runnable);
+    }
+
+    public static void setClientNotRunning() {
+        clientRunning = false;
     }
 }

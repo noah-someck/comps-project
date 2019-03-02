@@ -11,10 +11,18 @@ public class ClientThread extends Thread {
     @Override
     public void run() {
         rmiClient = new RmiClient();
-        try {
-            rmiClient.begin();
-        } catch (RemoteException | MalformedURLException | NotBoundException e) {
-            e.printStackTrace();
+        boolean began = false;
+        long startTime = System.currentTimeMillis();
+        while (!began) {
+            try {
+                rmiClient.begin();
+                began = true;
+            } catch (RemoteException | MalformedURLException | NotBoundException e) {
+                if (System.currentTimeMillis() - startTime > 5000) {
+                    began = true;
+                }
+                e.printStackTrace();
+            }
         }
         RuntimeSearchWindow.endClient();
     }
