@@ -57,6 +57,9 @@ public class Agent {
                 if ((className.contains("edu/carleton/cs/ASEcomps/RmiServer")) && (!className.contains("edu/carleton/cs/ASEcomps/RmiServerIntf"))) {
                     return null;
                 }
+                if (className.contains("edu/carleton/cs/ASEcomps/Shutdown")) {
+                    return null;
+                }
 //                try{
 //                    loader.loadClass("java.lang.String");
 //                }catch (ClassNotFoundException e){
