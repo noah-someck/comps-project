@@ -31,7 +31,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     private JPanel myToolWindowContent;
     private ToolWindow myToolWindow;
-    private ComboBox comboBox;
+    private static ComboBox comboBox;
+    private static JTextField searchBar;
 
 
     private static boolean firstClick = true;
@@ -57,7 +58,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent.setLayout(new GridBagLayout());
         String[] choices = { "string","object", "fuzzy","variable","regex"};
         JLabel label = new JLabel("Search for: ");
-        JTextField searchBar = new JTextField(20);
+        searchBar = new JTextField(20);
 
         comboBox = new ComboBox(choices);
 
@@ -75,6 +76,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     System.out.println(comboBox.getSelectedItem().toString());
 
                     if (firstClick) {
+                        searchBar.setEnabled(false);
+                        comboBox.setEnabled(false);
                         setSearchString(s, getSearchType(comboBox.getSelectedItem().toString()));
                         currentClient = new ClientThread();
                         currentClient.start();
@@ -176,5 +179,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     public static void setFirstClick() {
         firstClick = true;
+        searchBar.setEnabled(true);
+        comboBox.setEnabled(true);
     }
 }
