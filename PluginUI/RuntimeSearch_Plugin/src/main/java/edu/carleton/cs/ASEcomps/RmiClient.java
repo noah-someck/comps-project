@@ -23,6 +23,7 @@ public class RmiClient {
         boolean waitToFinish = false;
         String[] breakpoint = null;
         RmiServerIntf obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");
+        RuntimeSearchWindow.showInput();
 
         while (!obj.searchCompleted()) {
             obj = (RmiServerIntf) Naming.lookup("//localhost/RmiServer");

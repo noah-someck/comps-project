@@ -91,8 +91,6 @@ public class Agent {
 //        inst.addTransformer(ClassFileTransformers.filterByClassName(ClassFileTransformers.ClassPrinter, startsWithEdu));
         try {
             RmiServer.startServer();
-            StringSearchHolder.getInstance().setStringSearch(RmiServer.getSearchString());
-            StringSearchHolder.getInstance().setSearchType(RmiServer.getSearchType());
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
                     try {
@@ -102,6 +100,8 @@ public class Agent {
                     }
                 }
             });
+            StringSearchHolder.getInstance().setStringSearch(RmiServer.getSearchString());
+            StringSearchHolder.getInstance().setSearchType(RmiServer.getSearchType());
             new Shutdown().start();
         } catch (Exception e) {
             e.printStackTrace();

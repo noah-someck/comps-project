@@ -31,11 +31,12 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     private JPanel myToolWindowContent;
     private ToolWindow myToolWindow;
-    private ComboBox comboBox;
-
+    private static ComboBox comboBox;
+    private static JTextField searchBar;
 
     private static boolean firstClick = true;
     private static ClientThread currentClient;
+
 
     // TODO only allow RuntimeSearch to run once at a time
     // TODO tool window not opening every time
@@ -57,13 +58,16 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent.setLayout(new GridBagLayout());
         String[] choices = { "string","object","variable","regex"};
         JLabel label = new JLabel("Search for: ");
-        JTextField searchBar = new JTextField(20);
+        searchBar = new JTextField(20);
 
         comboBox = new ComboBox(choices);
 
         myToolWindowContent.add(label);
         myToolWindowContent.add(comboBox);
         myToolWindowContent.add(searchBar);
+
+        searchBar.setEnabled(false);
+        comboBox.setEnabled(false);
 
         JButton myButton = new JButton("Find Next");
         myButton.addActionListener(new ActionListener() {
@@ -75,9 +79,9 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                     System.out.println(comboBox.getSelectedItem().toString());
 
                     if (firstClick) {
+                        searchBar.setEnabled(false);
+                        comboBox.setEnabled(false);
                         setSearchString(s, getSearchType(comboBox.getSelectedItem().toString()));
-                        currentClient = new ClientThread();
-                        currentClient.start();
                     }
                     else if (currentClient != null) {
                         currentClient.reset();
@@ -117,8 +121,16 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         return RmiServerIntf.SEARCH_TYPE.STRING;
     }
 
+    public static void showInput() {
+        searchBar.setEnabled(true);
+        comboBox.setEnabled(true);
+    }
+
     public static void endClient() {
         currentClient = null;
+        searchBar.setEnabled(false);
+        comboBox.setEnabled(false);
+        RuntimeSearchProgramRunner.setClientNotRunning();
     }
 
     private void setSearchString(String searchString, RmiServerIntf.SEARCH_TYPE searchType) {
@@ -174,5 +186,10 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
 
     public static void setFirstClick() {
         firstClick = true;
+    }
+
+    public static void createClient() {
+        currentClient = new ClientThread();
+        currentClient.start();
     }
 }
