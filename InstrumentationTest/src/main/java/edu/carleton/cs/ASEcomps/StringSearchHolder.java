@@ -67,13 +67,9 @@ public class StringSearchHolder {
         // lowercase???
         if (match) {
             getInstance().matchFound = true;
-            System.out.println("Match!");
-            System.out.println(className);
-            System.out.println(file);
-            System.out.println(lineNumber);
+            System.out.println("Match Found: Line " + lineNumber + " in " + file);
             RmiServer.getInstance().setBreakpoint(new String[]{file, String.valueOf(lineNumber - 1)});
             while (getInstance().pause);
-            System.out.println("HELLO");
             StringSearchHolder.getInstance().pause = true;
             getInstance().matchFound = false;
         }

@@ -21,7 +21,7 @@ public class ClientThread extends Thread {
                 if (System.currentTimeMillis() - startTime > 5000) {
                     began = true;
                 }
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
         RuntimeSearchWindow.endClient();
