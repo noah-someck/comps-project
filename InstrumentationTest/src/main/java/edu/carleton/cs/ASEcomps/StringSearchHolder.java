@@ -41,7 +41,7 @@ public class StringSearchHolder {
 
     public static boolean checkStringSearch(String comparedString, String className, String file, int lineNumber) {
         getInstance().incrementCalls();
-        if (getInstance().getStringSearch() == null) {
+        if (getInstance().getStringSearch() == null || comparedString == null) {
             return false;
         }
 

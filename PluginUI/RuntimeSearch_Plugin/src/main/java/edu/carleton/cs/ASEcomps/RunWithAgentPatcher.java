@@ -5,6 +5,7 @@ import com.intellij.execution.configurations.JavaParameters;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.runners.JavaProgramPatcher;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.net.URI;
@@ -26,18 +27,22 @@ public class RunWithAgentPatcher extends JavaProgramPatcher {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        String PATH_TO_AGENT_JAR = uri.getPath();
+        String pathToAgentJar = uri.getPath();
 
         try {
-            unzip(PATH_TO_AGENT_JAR.replace("!/agents/InstrumentationTest-agent.jar", ""),
-                    PATH_TO_AGENT_JAR.replace("RuntimeSearch_Plugin-1.0-SNAPSHOT.jar!/agents/InstrumentationTest-agent.jar", ""));
+            unzip(pathToAgentJar.replace("!/agents/InstrumentationTest-agent.jar", ""),
+                    pathToAgentJar.replace("RuntimeSearch_Plugin-1.0-SNAPSHOT.jar!/agents/InstrumentationTest-agent.jar", ""));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        PATH_TO_AGENT_JAR = PATH_TO_AGENT_JAR.replace("RuntimeSearch_Plugin-1.0-SNAPSHOT.jar!/", "");
+        pathToAgentJar = pathToAgentJar.replace("RuntimeSearch_Plugin-1.0-SNAPSHOT.jar!/", "");
+        if (pathToAgentJar.charAt(2) == ':') {
+            pathToAgentJar = pathToAgentJar.substring(1);
+        }
+        pathToAgentJar = FilenameUtils.separatorsToSystem(pathToAgentJar);
         ParametersList vmParametersList = javaParameters.getVMParametersList();
-        vmParametersList.add( "-javaagent:" + PATH_TO_AGENT_JAR);
+        vmParametersList.add( "-javaagent:" + pathToAgentJar);
     }
 
     private void unzip(String jarFile, String destDir) throws IOException {
