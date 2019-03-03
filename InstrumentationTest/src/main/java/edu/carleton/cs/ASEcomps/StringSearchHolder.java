@@ -45,16 +45,15 @@ public class StringSearchHolder {
 
         boolean match = false;
 
-        System.out.println(getInstance().searchType);
         switch (getInstance().searchType) {
             case STRING:
                 if (comparedString.contains(getInstance().getStringSearch())) {
                     match = true;
                 }
                 break;
-            case FUZZY:
-                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch());
-                break;
+//            case FUZZY:
+//                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch());
+//                break;
             case OBJECT:
                 break;
             case VARIABLE:
@@ -83,11 +82,6 @@ public class StringSearchHolder {
 
     private static boolean regexTypeSearch(String comparedString, String pluginString) {
         return comparedString.matches(pluginString);
-    }
-
-    private static boolean fuzzyTypeSearch(String comparedString, String pluginString) {
-
-        return true;
     }
 
     public void continueSearch() {

@@ -55,7 +55,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent = new JPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         myToolWindowContent.setLayout(new GridBagLayout());
-        String[] choices = { "string","object", "fuzzy","variable","regex"};
+        String[] choices = { "string","object","variable","regex"};
         JLabel label = new JLabel("Search for: ");
         JTextField searchBar = new JTextField(20);
 
@@ -107,8 +107,6 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         switch (searchType) {
             case "string":
                 return RmiServerIntf.SEARCH_TYPE.STRING;
-            case "fuzzy":
-                return RmiServerIntf.SEARCH_TYPE.FUZZY;
             case "object":
                 return RmiServerIntf.SEARCH_TYPE.OBJECT;
             case "variable":
