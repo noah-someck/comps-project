@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RuntimeSearch_Plugin-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/classes/artifacts/RuntimeSearch_Plugin_1_0_SNAPSHOT</output-path>
+    <root id="archive" name="RuntimeSearch_Plugin-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="RuntimeSearch_Plugin_main" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+    </root>
+  </artifact>
+</component>

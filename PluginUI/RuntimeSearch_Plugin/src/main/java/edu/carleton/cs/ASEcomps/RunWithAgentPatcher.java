@@ -6,12 +6,11 @@ import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.runners.JavaProgramPatcher;
 
-import java.io.File;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.io.IOException;
 import java.util.Enumeration;
 
 public class RunWithAgentPatcher extends JavaProgramPatcher {
@@ -47,6 +46,9 @@ public class RunWithAgentPatcher extends JavaProgramPatcher {
         while (enumEntries.hasMoreElements()) {
             JarEntry file = (JarEntry) enumEntries.nextElement();
             File f = new File(destDir + File.separator + file.getName());
+            if (!file.getName().equals("agents/") && !file.getName().equals("agents/InstrumentationTest-agent.jar")) {
+                continue;
+            }
             if (file.isDirectory()) { // if its a directory, create it
                 f.mkdir();
                 continue;
