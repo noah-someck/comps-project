@@ -18,7 +18,7 @@ public class Shutdown extends Thread {
             curNumCalls = StringSearchHolder.getInstance().getNumCalls();
             long currentTime = System.currentTimeMillis();
             elapsedTime = currentTime - startTime;
-            if (elapsedTime >= 1000) {
+            if (elapsedTime >= 3000) {
                 startTime = currentTime;
                 if (!StringSearchHolder.getInstance().isMatchFound() && (prevNumCalls == curNumCalls)) {
                     System.out.println("FINISHED");
