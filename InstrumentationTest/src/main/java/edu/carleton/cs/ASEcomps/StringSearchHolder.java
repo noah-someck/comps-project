@@ -10,6 +10,7 @@ public class StringSearchHolder {
     private static StringSearchHolder stringSearchHolder;
     private String stringSearch;
     private RmiServerIntf.SEARCH_TYPE searchType;
+    private static final double FUZZY_ACCURACY = 0.75;
     volatile private boolean pause;
     volatile private int numCalls;
     volatile private boolean matchFound;
@@ -54,7 +55,7 @@ public class StringSearchHolder {
                 }
                 break;
             case FUZZY:
-                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch(), 0.2);
+                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch());
                 break;
             case OBJECT:
                 break;
@@ -65,7 +66,6 @@ public class StringSearchHolder {
                 break;
         }
 
-        // lowercase???
         if (match) {
             getInstance().matchFound = true;
             System.out.println("Match Found: Line " + lineNumber + " in " + file);
@@ -74,24 +74,23 @@ public class StringSearchHolder {
             StringSearchHolder.getInstance().pause = true;
             getInstance().matchFound = false;
         }
-        // why do we do this below???
-        return getInstance().getStringSearch().contains(comparedString);
+        return match;
     }
 
     private static boolean regexTypeSearch(String comparedString, String pluginString) {
         return comparedString.matches(pluginString);
     }
 
-    private static boolean fuzzyTypeSearch(String comparedString, String pluginString, double accuracy) {
+    private static boolean fuzzyTypeSearch(String comparedString, String pluginString) {
         int stringLengthDif = comparedString.length() - pluginString.length();
-        int containsLeven = calculateLevenshtein(comparedString, pluginString) - stringLengthDif;
-        if (containsLeven <= (pluginString.length() * accuracy)) {
+        int containsLeven = calculateLevenshteinDistance(comparedString, pluginString) - Math.abs(stringLengthDif);
+        if (containsLeven <= (Math.log(((double)pluginString.length()) * FUZZY_ACCURACY))) {
             return true;
         }
         return false;
     }
 
-    static int calculateLevenshtein(String x, String y) {
+    static int calculateLevenshteinDistance(String x, String y) {
         if (x.isEmpty()) {
             return y.length();
         }
@@ -100,10 +99,10 @@ public class StringSearchHolder {
             return x.length();
         }
 
-        int substitution = calculateLevenshtein(x.substring(1), y.substring(1))
+        int substitution = calculateLevenshteinDistance(x.substring(1), y.substring(1))
                 + costOfSubstitution(x.charAt(0), y.charAt(0));
-        int insertion = calculateLevenshtein(x, y.substring(1)) + 1;
-        int deletion = calculateLevenshtein(x.substring(1), y) + 1;
+        int insertion = calculateLevenshteinDistance(x, y.substring(1)) + 1;
+        int deletion = calculateLevenshteinDistance(x.substring(1), y) + 1;
 
         return min(substitution, insertion, deletion);
     }
