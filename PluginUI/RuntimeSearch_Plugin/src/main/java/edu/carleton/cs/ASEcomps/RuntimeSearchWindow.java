@@ -57,8 +57,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         myToolWindowContent = new JPanel();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         myToolWindowContent.setLayout(new GridBagLayout());
-        String[] choices = { "string","object","variable","regex"};
-
+        String[] choices = { "string","fuzzy","object","variable","regex"};
         JLabel label = new JLabel("Search for: ");
         searchBar = new JTextField(20);
         comboBox = new ComboBox(choices);
@@ -79,7 +78,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
                 String s = searchBar.getText().trim();
                 if (!s.equals("")) {
                     searchBar.setText(s);
-                    System.out.println(comboBox.getSelectedItem().toString());
+                    //System.out.println(comboBox.getSelectedItem().toString());
 
                     if (firstClick) {
                         searchBar.setEnabled(false);
@@ -113,6 +112,8 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         switch (searchType) {
             case "string":
                 return RmiServerIntf.SEARCH_TYPE.STRING;
+            case "fuzzy":
+                return RmiServerIntf.SEARCH_TYPE.FUZZY;
             case "object":
                 return RmiServerIntf.SEARCH_TYPE.OBJECT;
             case "variable":

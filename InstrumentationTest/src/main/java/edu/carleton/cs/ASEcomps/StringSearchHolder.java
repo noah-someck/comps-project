@@ -1,5 +1,7 @@
 package edu.carleton.cs.ASEcomps;
 
+import java.util.Arrays;
+
 /**
  * Created by Noah on 11/1/18.
  */
@@ -51,9 +53,9 @@ public class StringSearchHolder {
                     match = true;
                 }
                 break;
-//            case FUZZY:
-//                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch());
-//                break;
+            case FUZZY:
+                match = fuzzyTypeSearch(comparedString, getInstance().getStringSearch(), 0.2);
+                break;
             case OBJECT:
                 break;
             case VARIABLE:
@@ -78,6 +80,40 @@ public class StringSearchHolder {
 
     private static boolean regexTypeSearch(String comparedString, String pluginString) {
         return comparedString.matches(pluginString);
+    }
+
+    private static boolean fuzzyTypeSearch(String comparedString, String pluginString, double accuracy) {
+        int stringLengthDif = comparedString.length() - pluginString.length();
+        int containsLeven = calculateLevenshtein(comparedString, pluginString) - stringLengthDif;
+        if (containsLeven <= (pluginString.length() * accuracy)) {
+            return true;
+        }
+        return false;
+    }
+
+    static int calculateLevenshtein(String x, String y) {
+        if (x.isEmpty()) {
+            return y.length();
+        }
+
+        if (y.isEmpty()) {
+            return x.length();
+        }
+
+        int substitution = calculateLevenshtein(x.substring(1), y.substring(1))
+                + costOfSubstitution(x.charAt(0), y.charAt(0));
+        int insertion = calculateLevenshtein(x, y.substring(1)) + 1;
+        int deletion = calculateLevenshtein(x.substring(1), y) + 1;
+
+        return min(substitution, insertion, deletion);
+    }
+
+    public static int costOfSubstitution(char a, char b) {
+        return a == b ? 0 : 1;
+    }
+
+    public static int min(int... numbers) {
+        return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
     }
 
     public void continueSearch() {

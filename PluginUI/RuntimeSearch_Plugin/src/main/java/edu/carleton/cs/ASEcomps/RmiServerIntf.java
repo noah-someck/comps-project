@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 public interface RmiServerIntf extends Remote {
 
     public enum SEARCH_TYPE {
-        STRING, OBJECT, VARIABLE, REGEX;
+        STRING, FUZZY, OBJECT, VARIABLE, REGEX;
     }
 
     public String[] getBreakpoint() throws RemoteException;
