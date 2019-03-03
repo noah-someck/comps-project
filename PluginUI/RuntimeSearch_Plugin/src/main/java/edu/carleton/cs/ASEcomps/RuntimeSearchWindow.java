@@ -33,6 +33,7 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     private ToolWindow myToolWindow;
     private static ComboBox comboBox;
     private static JTextField searchBar;
+    private static JButton button;
 
     private static boolean firstClick = true;
     private static ClientThread currentClient;
@@ -57,20 +58,22 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         myToolWindowContent.setLayout(new GridBagLayout());
         String[] choices = { "string","object","variable","regex"};
+
         JLabel label = new JLabel("Search for: ");
         searchBar = new JTextField(20);
-
         comboBox = new ComboBox(choices);
+        button = new JButton("Find Next");
 
         myToolWindowContent.add(label);
         myToolWindowContent.add(comboBox);
         myToolWindowContent.add(searchBar);
+        myToolWindowContent.add(button);
 
         searchBar.setEnabled(false);
         comboBox.setEnabled(false);
+        button.setEnabled(false);
 
-        JButton myButton = new JButton("Find Next");
-        myButton.addActionListener(new ActionListener() {
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 String s = searchBar.getText().trim();
@@ -90,13 +93,12 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
             }
 
         });
-        myToolWindowContent.add(myButton);
 
         searchBar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    myButton.doClick();
+                    button.doClick();
                 }
             }
         });
@@ -124,12 +126,14 @@ public class RuntimeSearchWindow implements ToolWindowFactory {
     public static void showInput() {
         searchBar.setEnabled(true);
         comboBox.setEnabled(true);
+        button.setEnabled(true);
     }
 
     public static void endClient() {
         currentClient = null;
         searchBar.setEnabled(false);
         comboBox.setEnabled(false);
+        button.setEnabled(false);
         RuntimeSearchProgramRunner.setClientNotRunning();
     }
 
