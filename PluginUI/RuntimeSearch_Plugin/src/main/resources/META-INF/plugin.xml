@@ -24,9 +24,5 @@
 c
     <actions>
         <!-- Add your actions here -->
-        <action id="edu.carleton.cs.ASEcomps.RuntimeSearchDropdown" class="edu.carleton.cs.ASEcomps.RuntimeSearchDropdown" text="Debug with RuntimeSearch..."
-                description="Open RuntimeSearch Window to start debugging" icon="images/RSlogo2.png">
-            <add-to-group group-id="RunMenu" anchor="before" relative-to-action="Android.ChooseProfileConfiguration"/>
-        </action>
     </actions>
 </idea-plugin>
